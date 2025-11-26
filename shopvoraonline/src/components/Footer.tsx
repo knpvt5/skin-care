@@ -1,0 +1,84 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Instagram, Facebook, Twitter, Mail } from 'lucide-react';
+
+const Footer: React.FC = () => {
+  return (
+    <footer className="bg-stone-50 border-t border-stone-200 pt-12 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="col-span-1 md:col-span-1">
+            <Link to="/" className="text-2xl font-serif font-bold text-stone-800 tracking-tighter">
+              ShopVora<span className="text-rose-400">.</span>
+            </Link>
+            <p className="mt-4 text-sm text-stone-500 leading-relaxed">
+              Democratizing skincare education with science-backed advice and honest reviews. Your skin journey starts here.
+            </p>
+            <div className="flex space-x-4 mt-6">
+              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Instagram className="w-5 h-5" /></a>
+              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Facebook className="w-5 h-5" /></a>
+              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Twitter className="w-5 h-5" /></a>
+              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Mail className="w-5 h-5" /></a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-sm font-semibold text-stone-900 tracking-wider uppercase">Explore</h3>
+            <ul className="mt-4 space-y-2">
+              <li><Link to="/blog" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">Blog</Link></li>
+              <li><Link to="/guide" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">Skincare Guide</Link></li>
+              <li><Link to="/about" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">About Us</Link></li>
+              <li><Link to="/contact" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">Contact</Link></li>
+            </ul>
+          </div>
+
+          {/* Categories */}
+          <div>
+            <h3 className="text-sm font-semibold text-stone-900 tracking-wider uppercase">Topics</h3>
+            <ul className="mt-4 space-y-2">
+              <li><Link to="/blog?category=Acne Care" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">Acne Care</Link></li>
+              <li><Link to="/blog?category=Anti-Aging" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">Anti-Aging</Link></li>
+              <li><Link to="/blog?category=K-Beauty" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">K-Beauty</Link></li>
+              <li><Link to="/blog?category=Product Reviews" className="text-sm text-stone-500 hover:text-rose-500 transition-colors">Product Reviews</Link></li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h3 className="text-sm font-semibold text-stone-900 tracking-wider uppercase">Stay Glowing</h3>
+            <p className="mt-4 text-sm text-stone-500">
+              Subscribe to get the latest skincare tips and exclusive offers.
+            </p>
+            <form className="mt-4 flex flex-col space-y-2">
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                className="px-4 py-2 border border-stone-200 rounded-md focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-400 text-sm"
+              />
+              <button 
+                type="submit" 
+                className="px-4 py-2 bg-stone-900 text-white text-sm font-medium rounded-md hover:bg-stone-800 transition-colors"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div className="mt-12 border-t border-stone-200 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-xs text-stone-400">
+            &copy; {new Date().getFullYear()} ShopVoraOnline. All rights reserved.
+          </p>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            <Link to="/privacy" className="text-xs text-stone-400 hover:text-stone-600">Privacy Policy</Link>
+            <Link to="/terms" className="text-xs text-stone-400 hover:text-stone-600">Terms of Service</Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

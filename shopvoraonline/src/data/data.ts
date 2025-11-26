@@ -150,4 +150,17 @@ export const blogPosts: BlogPost[] = [
     featured: false,
     relatedProducts: ['p1'],
   },
+    {
+    id: 'b6',
+    title: 'adsaf',
+    excerpt: 'help in skin grou\w.',
+    content: '<p>Hyaluronic acid can hold up to 1000x its weight in water asdfoindasaoifnawdofnaosdgnadsk;jvnaskdjvnaos[dgnaognoiairng.</p>',
+    author: 'sied',
+    date: 'Nov 20, 2023',
+    category: 'Ingredient Explanations',
+    image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&q=80&w=800',
+    readTime: '4 min read',
+    featured: false,
+    relatedProducts: ['p1'],
+  },
 ];

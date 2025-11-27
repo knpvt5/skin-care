@@ -44,16 +44,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               Amazon <ExternalLink className="w-3 h-3 ml-1" />
             </a>
           )}
-          {product.affiliateLinks.sephora && (
-            <a 
-              href={product.affiliateLinks.sephora} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center px-3 py-2 bg-white border border-stone-200 text-stone-900 text-xs font-medium rounded-lg hover:bg-stone-50 transition-colors"
-            >
-              Sephora
-            </a>
-          )}
         </div>
       </div>
     </div>

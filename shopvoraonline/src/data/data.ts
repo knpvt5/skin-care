@@ -8,7 +8,6 @@ export interface Product {
   reviews: number;
   affiliateLinks: {
     amazon?: string;
-    sephora?: string;
   };
   tags: string[];
 }
@@ -38,7 +37,6 @@ export const products: Product[] = [
     reviews: 1240,
     affiliateLinks: {
       amazon: '#',
-      sephora: '#',
     },
     tags: ['hydration', 'serum', 'dry skin'],
   },
@@ -63,9 +61,7 @@ export const products: Product[] = [
     image: 'https://images.unsplash.com/photo-1571781348782-84113d944006?auto=format&fit=crop&q=80&w=600',
     rating: 4.7,
     reviews: 560,
-    affiliateLinks: {
-      sephora: '#',
-    },
+    affiliateLinks: {},
     tags: ['anti-aging', 'night', 'retinol'],
   },
   {
@@ -78,7 +74,6 @@ export const products: Product[] = [
     reviews: 2100,
     affiliateLinks: {
       amazon: '#',
-      sephora: '#',
     },
     tags: ['cleanser', 'sensitive skin'],
   },

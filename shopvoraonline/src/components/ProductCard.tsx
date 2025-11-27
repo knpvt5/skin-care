@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import type { Product } from '../data/data';
 
 interface ProductCardProps {
@@ -15,9 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           alt={product.name} 
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-bold text-stone-800 shadow-sm">
-          {product.price}
-        </div>
+
       </div>
       
       <div className="p-4">
@@ -26,11 +24,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {product.name}
         </h3>
         
-        <div className="flex items-center mb-4">
-          <Star className="w-3 h-3 text-yellow-400 fill-current" />
-          <span className="ml-1 text-xs text-stone-500 font-medium">{product.rating}</span>
-          <span className="mx-1 text-stone-300">•</span>
-          <span className="text-xs text-stone-400">{product.reviews} reviews</span>
+        <div className="mb-4">
+          <span className="text-lg font-bold text-stone-900">{product.price}</span>
         </div>
         
         <div className="flex gap-2">

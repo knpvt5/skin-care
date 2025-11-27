@@ -19,19 +19,30 @@ export const api = {
       .select('*');
     
     if (error) throw error;
-    return data as Product[]; // Assuming Supabase data matches Product interface roughly, might need mapping
+    
+    return data.map((product: any) => ({
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      price: '$' + product.price.toFixed(2),
+      image: product.image_url,
+      affiliateLinks: {
+        amazon: product.product_url
+      },
+      tags: product.tags || [],
+      description: product.description
+    })) as Product[];
   },
 
   createProduct: async (product: Omit<Product, 'id' | 'rating' | 'reviews'>) => {
-    // Mapping frontend structure to DB structure if needed, but for now assuming direct mapping based on user request
     const dbProduct = {
       name: product.name,
       brand: product.brand,
-      price: parseFloat(product.price.replace('$', '')), // Convert string price to number
+      price: parseFloat(product.price.replace('$', '')),
       image_url: product.image,
       tags: product.tags,
-      product_url: product.affiliateLinks?.amazon, // Assuming amazon link as primary for now based on schema
-      // description: '...' // Missing in frontend interface but present in DB
+      product_url: product.affiliateLinks?.amazon,
+      description: product.description
     };
 
     const { data, error } = await supabase

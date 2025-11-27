@@ -16,7 +16,8 @@ const Admin: React.FC = () => {
     price: '',
     image: '',
     tags: '',
-    amazonLink: ''
+    amazonLink: '',
+    description: ''
   });
 
   // Blog Form State
@@ -41,10 +42,11 @@ const Admin: React.FC = () => {
         price: productForm.price,
         image: productForm.image,
         tags: productForm.tags.split(',').map(t => t.trim()),
-        affiliateLinks: { amazon: productForm.amazonLink }
+        affiliateLinks: { amazon: productForm.amazonLink },
+        description: productForm.description
       });
       setMessage({ type: 'success', text: 'Product created successfully!' });
-      setProductForm({ name: '', brand: '', price: '', image: '', tags: '', amazonLink: '' });
+      setProductForm({ name: '', brand: '', price: '', image: '', tags: '', amazonLink: '', description: '' });
     } catch (err) {
       console.error(err);
       setMessage({ type: 'error', text: 'Failed to create product.' });
@@ -160,6 +162,15 @@ const Admin: React.FC = () => {
                   onChange={e => setProductForm({...productForm, image: e.target.value})}
                   className="w-full px-3 py-2 border rounded-lg"
                   required
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium mb-1">Description</label>
+                <textarea
+                  value={productForm.description}
+                  onChange={e => setProductForm({...productForm, description: e.target.value})}
+                  className="w-full px-3 py-2 border rounded-lg h-24"
+                  placeholder="Product description..."
                 />
               </div>
               <div className="md:col-span-2">

@@ -1,16 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Loader2 } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
-import { blogPosts, products } from '../data/data';
+import { api } from '../services/api';
+import { products } from '../data/data'; // Still using mock products for related products for now
+import type { BlogPost as BlogPostType } from '../data/data';
 
 const BlogPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const post = blogPosts.find(p => p.id === id);
+  const [post, setPost] = useState<BlogPostType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  if (!post) {
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!id) return;
+      try {
+        const data = await api.getBlogPost(id);
+        setPost(data);
+      } catch (err) {
+        console.error(err);
+        setError('Article not found');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <Loader2 className="w-10 h-10 animate-spin text-rose-500" />
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!post || error) {
     return (
       <Layout>
         <div className="min-h-[60vh] flex flex-col items-center justify-center">
@@ -48,7 +79,6 @@ const BlogPost: React.FC = () => {
               {post.title}
             </h1>
             <div className="flex items-center gap-6 text-sm text-white/80">
-              <span className="flex items-center"><User className="w-4 h-4 mr-2" /> {post.author}</span>
               <span className="flex items-center"><Calendar className="w-4 h-4 mr-2" /> {post.date}</span>
             </div>
           </div>

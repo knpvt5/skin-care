@@ -17,7 +17,6 @@ export interface BlogPost {
   title: string;
   excerpt: string;
   content: string; // HTML or Markdown content
-  author: string;
   date: string;
   category: string;
   image: string;
@@ -85,7 +84,6 @@ export const blogPosts: BlogPost[] = [
     title: 'The Ultimate Guide to Glass Skin',
     excerpt: 'Discover the K-beauty secrets to achieving that dewy, luminous look everyone is talking about.',
     content: '<p>Glass skin is the term used to describe a complexion that is so smooth, clear, and hydrated that it appears transparent and reflective—like a sheet of glass. This trend, originating from Korea, is all about layering hydration and nourishing the skin.</p><h3>Step 1: Double Cleanse</h3><p>Start with an oil-based cleanser to remove makeup and sunscreen, followed by a water-based cleanser to clean the pores.</p>',
-    author: 'Vora',
     date: 'Oct 24, 2023',
     category: 'K-Beauty',
     image: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=800',
@@ -98,7 +96,6 @@ export const blogPosts: BlogPost[] = [
     title: 'Retinol 101: A Beginner’s Guide',
     excerpt: 'Everything you need to know about starting retinol without irritating your skin.',
     content: '<p>Retinol is a gold-standard ingredient for anti-aging, but it can be intimidating. It helps increase cell turnover and stimulate collagen production.</p><h3>How to Start</h3><p>Start slow. Use a pea-sized amount once or twice a week at night, and always follow up with moisturizer.</p>',
-    author: 'Dr. Skin',
     date: 'Nov 02, 2023',
     category: 'Anti-Aging',
     image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=800',
@@ -111,7 +108,6 @@ export const blogPosts: BlogPost[] = [
     title: '5 Ingredients for Acne-Prone Skin',
     excerpt: 'Struggling with breakouts? Look for these key ingredients in your skincare routine.',
     content: '<p>Acne can be stubborn, but the right ingredients can make a huge difference. Salicylic acid, benzoyl peroxide, and niacinamide are your best friends.</p>',
-    author: 'Vora',
     date: 'Nov 10, 2023',
     category: 'Acne Care',
     image: 'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&q=80&w=800',
@@ -124,7 +120,6 @@ export const blogPosts: BlogPost[] = [
     title: 'My Morning Skincare Routine',
     excerpt: 'A simple, effective morning routine to wake up your skin and protect it for the day.',
     content: '<p>Mornings are for protection. Vitamin C and SPF are non-negotiables.</p>',
-    author: 'Vora',
     date: 'Nov 15, 2023',
     category: 'Routines',
     image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=800',
@@ -137,7 +132,6 @@ export const blogPosts: BlogPost[] = [
     title: 'Understanding Hyaluronic Acid',
     excerpt: 'Why this hydration hero deserves a spot in everyone’s skincare cabinet.',
     content: '<p>Hyaluronic acid can hold up to 1000x its weight in water.</p>',
-    author: 'Vora',
     date: 'Nov 20, 2023',
     category: 'Ingredient Explanations',
     image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&q=80&w=800',

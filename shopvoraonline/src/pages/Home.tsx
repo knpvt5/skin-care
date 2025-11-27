@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Loader2 } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import BlogCard from '../components/BlogCard';
 import ProductCard from '../components/ProductCard';
-import { blogPosts, products } from '../data/data';
+import { api } from '../services/api';
+import type { Product, BlogPost } from '../data/data';
 
 const Home: React.FC = () => {
-  const featuredPosts = blogPosts.filter(post => post.featured).slice(0, 3);
-  const featuredProducts = products.slice(0, 4);
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [postsData, productsData] = await Promise.all([
+          api.getBlogPosts(),
+          api.getProducts()
+        ]);
+        setFeaturedPosts(postsData.slice(0, 3));
+        setFeaturedProducts(productsData.slice(0, 4));
+      } catch (err) {
+        console.error('Failed to fetch data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-10 h-10 animate-spin text-rose-500" />
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

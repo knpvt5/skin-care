@@ -5,6 +5,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Guide from './pages/Guide';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/blog/:id" element={<BlogPost />} />
       <Route path="/guide" element={<Guide />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/admin" element={<Admin />} />
     </Routes>
   );
 }

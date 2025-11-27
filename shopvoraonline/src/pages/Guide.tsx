@@ -1,12 +1,39 @@
-import React from 'react';
-import { Sun, Moon, Droplet, Shield } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Sun, Moon, Droplet, Shield, Loader2 } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
-import { products } from '../data/data';
+import { api } from '../services/api';
+import type { Product } from '../data/data';
 
 const Guide: React.FC = () => {
-  const recommendedProducts = products.slice(0, 2);
+  const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await api.getProducts();
+        setRecommendedProducts(data.slice(0, 2));
+      } catch (err) {
+        console.error('Failed to fetch products:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-10 h-10 animate-spin text-rose-500" />
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

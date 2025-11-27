@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import BlogCard from '../components/BlogCard';
-import { blogPosts } from '../data/data';
+import { api } from '../services/api';
+import type { BlogPost } from '../data/data';
 
 const Blog: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   
   const categoryParam = searchParams.get('category');
 
@@ -19,9 +23,25 @@ const Blog: React.FC = () => {
     }
   }, [categoryParam]);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await api.getBlogPosts();
+        setPosts(data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load blog posts.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   const categories = ['All', 'Acne Care', 'Anti-Aging', 'K-Beauty', 'Routines', 'Ingredient Explanations'];
 
-  const filteredPosts = blogPosts.filter(post => {
+  const filteredPosts = posts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
@@ -86,7 +106,15 @@ const Blog: React.FC = () => {
         </div>
 
         {/* Grid */}
-        {filteredPosts.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-10 h-10 animate-spin text-rose-500" />
+          </div>
+        ) : error ? (
+          <div className="text-center py-20 text-red-500">
+            {error}
+          </div>
+        ) : filteredPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map(post => (
               <BlogCard key={post.id} post={post} />

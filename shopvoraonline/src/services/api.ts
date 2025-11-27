@@ -12,6 +12,16 @@ export const api = {
     return true;
   },
 
+  getContactMessages: async () => {
+    const { data, error } = await supabase
+      .from('contact')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data;
+  },
+
   // Products
   getProducts: async () => {
     const { data, error } = await supabase

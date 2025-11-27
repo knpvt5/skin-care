@@ -5,7 +5,7 @@ import SEO from '../components/SEO';
 import { api } from '../services/api';
 
 const Admin: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'product' | 'blog'>('product');
+  const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages'>('product');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
@@ -87,10 +87,10 @@ const Admin: React.FC = () => {
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-stone-200">
+        <div className="flex gap-4 mb-8 border-b border-stone-200 overflow-x-auto">
           <button
             onClick={() => setActiveTab('product')}
-            className={`pb-4 px-4 font-medium transition-colors ${
+            className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
               activeTab === 'product' 
                 ? 'border-b-2 border-stone-900 text-stone-900' 
                 : 'text-stone-500 hover:text-stone-900'
@@ -100,13 +100,23 @@ const Admin: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('blog')}
-            className={`pb-4 px-4 font-medium transition-colors ${
+            className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
               activeTab === 'blog' 
                 ? 'border-b-2 border-stone-900 text-stone-900' 
                 : 'text-stone-500 hover:text-stone-900'
             }`}
           >
             Add Blog Post
+          </button>
+          <button
+            onClick={() => setActiveTab('messages')}
+            className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
+              activeTab === 'messages' 
+                ? 'border-b-2 border-stone-900 text-stone-900' 
+                : 'text-stone-500 hover:text-stone-900'
+            }`}
+          >
+            Messages
           </button>
         </div>
 
@@ -275,8 +285,59 @@ const Admin: React.FC = () => {
             </button>
           </form>
         )}
+
+        {/* Messages Tab */}
+        {activeTab === 'messages' && (
+          <MessagesTab />
+        )}
       </div>
     </Layout>
+  );
+};
+
+const MessagesTab: React.FC = () => {
+  const [messages, setMessages] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const data = await api.getContactMessages();
+        setMessages(data || []);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load messages.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, []);
+
+  if (loading) return <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>;
+  if (error) return <div className="text-red-500 py-4">{error}</div>;
+
+  return (
+    <div className="space-y-4">
+      {messages.length === 0 ? (
+        <p className="text-stone-500 text-center py-12">No messages found.</p>
+      ) : (
+        messages.map((msg) => (
+          <div key={msg.id} className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="font-bold text-lg text-stone-900">{msg.subject}</h3>
+                <p className="text-sm text-stone-500">From: <span className="font-medium text-stone-700">{msg.name}</span> ({msg.email})</p>
+              </div>
+              <span className="text-xs text-stone-400">{new Date(msg.created_at).toLocaleDateString()}</span>
+            </div>
+            <p className="text-stone-600 whitespace-pre-wrap">{msg.message}</p>
+          </div>
+        ))
+      )}
+    </div>
   );
 };
 

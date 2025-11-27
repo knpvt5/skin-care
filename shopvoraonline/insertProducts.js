@@ -66,6 +66,8 @@ const products = [
   },
 ];
 
+
+
 async function insertData() {
   console.log('Starting data insertion...');
   

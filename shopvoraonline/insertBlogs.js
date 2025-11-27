@@ -1,23 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
-// Read .env file manually since we don't have dotenv
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const envPath = path.join(__dirname, '.env');
-const envContent = fs.readFileSync(envPath, 'utf-8');
+process.loadEnvFile("./.env")
 
-const envVars = envContent.split('\n').reduce((acc, line) => {
-  const [key, value] = line.split('=');
-  if (key && value) {
-    acc[key.trim()] = value.trim();
-  }
-  return acc;
-}, {});
-
-const supabaseUrl = envVars.VITE_SUPABASE_URL;
-const supabaseAnonKey = envVars.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
@@ -33,8 +19,7 @@ const blogPosts = [
     category: 'K-Beauty',
     image: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=800',
     readTime: '5 min read',
-    featured: true,
-    relatedProducts: ['p1', 'p4'],
+    tags: ['k-beauty', 'glass skin', 'hydration'],
   },
   {
     title: 'Retinol 101: A Beginner’s Guide',
@@ -43,8 +28,7 @@ const blogPosts = [
     category: 'Anti-Aging',
     image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=800',
     readTime: '7 min read',
-    featured: true,
-    relatedProducts: ['p3', 'p2'],
+    tags: ['retinol', 'anti-aging', 'beginner'],
   },
   {
     title: '5 Ingredients for Acne-Prone Skin',
@@ -53,8 +37,7 @@ const blogPosts = [
     category: 'Acne Care',
     image: 'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&q=80&w=800',
     readTime: '4 min read',
-    featured: false,
-    relatedProducts: ['p4'],
+    tags: ['acne', 'ingredients', 'skincare'],
   },
   {
     title: 'My Morning Skincare Routine',
@@ -63,8 +46,7 @@ const blogPosts = [
     category: 'Routines',
     image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=800',
     readTime: '3 min read',
-    featured: false,
-    relatedProducts: ['p2', 'p1'],
+    tags: ['routine', 'morning', 'vitamin c'],
   },
   {
     title: 'Understanding Hyaluronic Acid',
@@ -73,38 +55,37 @@ const blogPosts = [
     category: 'Ingredient Explanations',
     image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&q=80&w=800',
     readTime: '4 min read',
-    featured: false,
-    relatedProducts: ['p1'],
+    tags: ['hyaluronic acid', 'ingredients', 'hydration'],
   },
 ];
 
 async function insertData() {
-  console.log('Starting data insertion...');
+  console.log('Starting blog data insertion...');
   
-  for (const product of products) {
-    const priceNumber = parseFloat(product.price.replace('$', ''));
+  for (const post of blogPosts) {
+    // Parse read time string "5 min read" to integer 5
+    const readTimeInt = parseInt(post.readTime);
     
     const { data, error } = await supabase
-      .from('products')
+      .from('blogs')
       .insert({
-        name: product.name,
-        brand: product.brand,
-        price: priceNumber,
-        image_url: product.image,
-        description: product.description,
-        tags: product.tags,
-        product_url: product.affiliateLinks
+        title: post.title,
+        content: post.content,
+        category: post.category,
+        image_url: post.image,
+        read_time: readTimeInt || 5, // Default to 5 if parsing fails
+        tags: post.tags
       })
       .select();
 
     if (error) {
-      console.error(`Error inserting ${product.name}:`, error.message);
+      console.error(`Error inserting ${post.title}:`, error.message);
     } else {
-      console.log(`Successfully inserted: ${product.name}`);
+      console.log(`Successfully inserted: ${post.title}`);
     }
   }
   
-  console.log('Data insertion complete.');
+  console.log('Blog data insertion complete.');
 }
 
 insertData();

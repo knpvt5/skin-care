@@ -4,8 +4,6 @@ export interface Product {
   brand: string;
   price: string;
   image: string;
-  rating: number;
-  reviews: number;
   affiliateLinks: {
     amazon?: string;
   };
@@ -33,8 +31,6 @@ export const products: Product[] = [
     brand: 'GlowLab',
     price: '$24.99',
     image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600',
-    rating: 4.8,
-    reviews: 1240,
     affiliateLinks: {
       amazon: '#',
     },
@@ -46,8 +42,6 @@ export const products: Product[] = [
     brand: 'SunShield',
     price: '$18.50',
     image: 'https://images.unsplash.com/photo-1556228720-1957be83f304?auto=format&fit=crop&q=80&w=600',
-    rating: 4.9,
-    reviews: 850,
     affiliateLinks: {
       amazon: '#',
     },
@@ -59,8 +53,6 @@ export const products: Product[] = [
     brand: 'AgeDefy',
     price: '$32.00',
     image: 'https://images.unsplash.com/photo-1571781348782-84113d944006?auto=format&fit=crop&q=80&w=600',
-    rating: 4.7,
-    reviews: 560,
     affiliateLinks: {},
     tags: ['anti-aging', 'night', 'retinol'],
   },
@@ -70,8 +62,6 @@ export const products: Product[] = [
     brand: 'PureSkin',
     price: '$15.00',
     image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=600',
-    rating: 4.6,
-    reviews: 2100,
     affiliateLinks: {
       amazon: '#',
     },

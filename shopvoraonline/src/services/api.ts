@@ -36,6 +36,16 @@ export const api = {
     return data;
   },
 
+  deleteContactMessage: async (id: string) => {
+    const { error } = await supabase
+      .from('contact')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  },
+
   // Products
   getProducts: async () => {
     const { data, error } = await supabase

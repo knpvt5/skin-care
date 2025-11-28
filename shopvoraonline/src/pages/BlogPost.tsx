@@ -96,9 +96,6 @@ const BlogPost: React.FC = () => {
             {/* Main Content */}
             <div className="lg:col-span-2">
               <div className="prose prose-stone prose-lg max-w-none">
-                <p className="lead text-xl text-stone-600 font-medium italic mb-8 border-l-4 border-rose-500 pl-4">
-                  {post.excerpt}
-                </p>
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
             </div>

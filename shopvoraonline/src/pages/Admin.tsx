@@ -534,6 +534,17 @@ const MessagesTab: React.FC = () => {
     fetchMessages();
   }, []);
 
+  const handleDeleteMessage = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this message?')) return;
+    try {
+      await api.deleteContactMessage(id);
+      setMessages(messages.filter(m => m.id !== id));
+    } catch (err) {
+      console.error(err);
+      setError('Failed to delete message');
+    }
+  };
+
   if (loading) return <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>;
   if (error) return <div className="text-red-500 py-4">{error}</div>;
 
@@ -545,11 +556,20 @@ const MessagesTab: React.FC = () => {
         messages.map((msg) => (
           <div key={msg.id} className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
             <div className="flex justify-between items-start mb-4">
-              <div>
+              <div className="flex-1">
                 <h3 className="font-bold text-lg text-stone-900">{msg.subject}</h3>
                 <p className="text-sm text-stone-500">From: <span className="font-medium text-stone-700">{msg.name}</span> ({msg.email})</p>
               </div>
-              <span className="text-xs text-stone-400">{new Date(msg.created_at).toLocaleDateString()}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-stone-400">{new Date(msg.created_at).toLocaleDateString()}</span>
+                <button
+                  onClick={() => handleDeleteMessage(msg.id)}
+                  className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                  title="Delete Message"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
             <p className="text-stone-600 whitespace-pre-wrap">{msg.message}</p>
           </div>

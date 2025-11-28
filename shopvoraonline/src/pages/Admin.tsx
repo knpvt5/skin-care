@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, Trash2, RefreshCw } from 'lucide-react';
+import { Loader2, Trash2, RefreshCw, Edit } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { api } from '../services/api';
@@ -56,13 +56,17 @@ const Admin: React.FC = () => {
     tags: ''
   });
 
+  // Edit Mode State
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
+  const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
+
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ type: '', text: '' });
 
     try {
-      await api.createProduct({
+      const productData = {
         name: productForm.name,
         brand: productForm.brand,
         price: productForm.price,
@@ -70,13 +74,22 @@ const Admin: React.FC = () => {
         tags: productForm.tags.split(',').map(t => t.trim()),
         affiliateLinks: { amazon: productForm.amazonLink },
         description: productForm.description
-      });
-      setMessage({ type: 'success', text: 'Product created successfully!' });
+      };
+
+      if (editingProductId) {
+        await api.updateProduct(editingProductId, productData);
+        setMessage({ type: 'success', text: 'Product updated successfully!' });
+        setEditingProductId(null);
+      } else {
+        await api.createProduct(productData);
+        setMessage({ type: 'success', text: 'Product created successfully!' });
+      }
+      
       setProductForm({ name: '', brand: '', price: '', image: '', tags: '', amazonLink: '', description: '' });
       fetchContent(); // Refresh list
     } catch (err) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Failed to create product.' });
+      setMessage({ type: 'error', text: editingProductId ? 'Failed to update product.' : 'Failed to create product.' });
     } finally {
       setLoading(false);
     }
@@ -88,28 +101,36 @@ const Admin: React.FC = () => {
     setMessage({ type: '', text: '' });
 
     try {
-      // Check for duplicate title
-      const exists = await api.checkBlogPostExists(blogForm.title);
-      if (exists) {
-        setMessage({ type: 'error', text: 'A blog post with this title already exists. Please choose a different title.' });
-        setLoading(false);
-        return;
-      }
-
-      await api.createBlogPost({
+      const blogData = {
         title: blogForm.title,
         content: blogForm.content,
         category: blogForm.category,
         image_url: blogForm.image_url,
         read_time: blogForm.read_time,
         tags: blogForm.tags.split(',').map(t => t.trim())
-      });
-      setMessage({ type: 'success', text: 'Blog post created successfully!' });
+      };
+
+      if (editingBlogId) {
+        await api.updateBlogPost(editingBlogId, blogData);
+        setMessage({ type: 'success', text: 'Blog post updated successfully!' });
+        setEditingBlogId(null);
+      } else {
+        // Check for duplicate title only when creating
+        const exists = await api.checkBlogPostExists(blogForm.title);
+        if (exists) {
+          setMessage({ type: 'error', text: 'A blog post with this title already exists. Please choose a different title.' });
+          setLoading(false);
+          return;
+        }
+        await api.createBlogPost(blogData);
+        setMessage({ type: 'success', text: 'Blog post created successfully!' });
+      }
+      
       setBlogForm({ title: '', content: '', category: '', image_url: '', read_time: 5, tags: '' });
       fetchContent(); // Refresh list
     } catch (err: any) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Failed to create blog post.' });
+      setMessage({ type: 'error', text: editingBlogId ? 'Failed to update blog post.' : 'Failed to create blog post.' });
     } finally {
       setLoading(false);
     }
@@ -137,6 +158,35 @@ const Admin: React.FC = () => {
       console.error(err);
       setMessage({ type: 'error', text: 'Failed to delete blog post' });
     }
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setActiveTab('product');
+    setEditingProductId(product.id);
+    setProductForm({
+      name: product.name,
+      brand: product.brand,
+      price: product.price,
+      image: product.image,
+      tags: product.tags.join(', '),
+      amazonLink: product.affiliateLinks?.amazon || '',
+      description: product.description || ''
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleEditBlog = (blog: BlogPost) => {
+    setActiveTab('blog');
+    setEditingBlogId(blog.id);
+    setBlogForm({
+      title: blog.title,
+      content: blog.content,
+      category: blog.category,
+      image_url: blog.image,
+      read_time: parseInt(blog.readTime.replace(' min read', '')),
+      tags: blog.tags.join(', ')
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -268,7 +318,7 @@ const Admin: React.FC = () => {
               disabled={loading}
               className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer"
             >
-              {loading ? <Loader2 className="animate-spin" /> : 'Create Product'}
+              {loading ? <Loader2 className="animate-spin" /> : editingProductId ? 'Update Product' : 'Create Product'}
             </button>
           </form>
         )}
@@ -347,7 +397,7 @@ const Admin: React.FC = () => {
               disabled={loading}
               className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer"
             >
-              {loading ? <Loader2 className="animate-spin" /> : 'Create Blog Post'}
+                            {loading ? <Loader2 className="animate-spin" /> : editingBlogId ? 'Update Blog Post' : 'Create Blog Post'}
             </button>
           </form>
         )}
@@ -392,13 +442,22 @@ const Admin: React.FC = () => {
                           </div>
                         )}
                       </div>
-                      <button
-                        onClick={() => handleDeleteProduct(product.id)}
-                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer flex-shrink-0"
-                        title="Delete Product"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex gap-2 shrink-0">
+                        <button
+                          onClick={() => handleEditProduct(product)}
+                          className="text-stone-400 hover:text-blue-500 transition-colors p-1 cursor-pointer"
+                          title="Edit Product"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteProduct(product.id)}
+                          className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                          title="Delete Product"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   ))
                 )}
@@ -426,13 +485,22 @@ const Admin: React.FC = () => {
                           </div>
                         )}
                       </div>
-                      <button
-                        onClick={() => handleDeleteBlog(blog.id)}
-                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer flex-shrink-0"
-                        title="Delete Blog Post"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex gap-2 shrink-0">
+                        <button
+                          onClick={() => handleEditBlog(blog)}
+                          className="text-stone-400 hover:text-blue-500 transition-colors p-1 cursor-pointer"
+                          title="Edit Blog Post"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBlog(blog.id)}
+                          className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                          title="Delete Blog Post"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   ))
                 )}

@@ -79,6 +79,28 @@ export const api = {
     return data;
   },
 
+  updateProduct: async (id: string, product: Omit<Product, 'id' | 'rating' | 'reviews'>) => {
+    const dbProduct = {
+      name: product.name,
+      brand: product.brand,
+      price: parseFloat(product.price.replace('$', '')),
+      image_url: product.image,
+      tags: product.tags,
+      product_url: product.affiliateLinks?.amazon,
+      description: product.description
+    };
+
+    const { data, error } = await supabase
+      .from('products')
+      .update(dbProduct)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
   deleteProduct: async (id: string) => {
     const { error } = await supabase
       .from('products')
@@ -151,6 +173,18 @@ export const api = {
     const { data, error } = await supabase
       .from('blogs')
       .insert([post])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
+  updateBlogPost: async (id: string, post: { title: string; content: string; category: string; image_url: string; read_time: number; tags: string[] }) => {
+    const { data, error } = await supabase
+      .from('blogs')
+      .update(post)
+      .eq('id', id)
       .select()
       .single();
     

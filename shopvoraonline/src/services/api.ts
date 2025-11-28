@@ -1,6 +1,15 @@
 import { supabase } from '../lib/supabase';
 import type { Product, BlogPost } from '../types/types';
 
+// Helper function to strip HTML tags and get plain text
+const stripHtmlTags = (html: string): string => {
+  // Create a temporary div element to parse HTML
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  // Get text content and clean up extra whitespace
+  return tmp.textContent || tmp.innerText || '';
+};
+
 export const api = {
   // Auth
   auth: {
@@ -131,18 +140,21 @@ export const api = {
     if (error) throw error;
     
     // Map DB fields to frontend interface
-    return data.map((post: any) => ({
-      id: post.id,
-      title: post.title,
-      excerpt: post.content.substring(0, 100) + '...',
-      content: post.content,
-      date: new Date(post.published_at).toLocaleDateString(),
-      category: post.category,
-      tags: post.tags,
-      image: post.image_url,
-      readTime: post.read_time + ' min read',
-      relatedProducts: [],
-    })) as BlogPost[];
+    return data.map((post: any) => {
+      const plainText = stripHtmlTags(post.content);
+      return {
+        id: post.id,
+        title: post.title,
+        excerpt: plainText.substring(0, 150) + '...',
+        content: post.content,
+        date: new Date(post.published_at).toLocaleDateString(),
+        category: post.category,
+        tags: post.tags,
+        image: post.image_url,
+        readTime: post.read_time + ' min read',
+        relatedProducts: [],
+      };
+    }) as BlogPost[];
   },
 
   getBlogPost: async (title: string) => {
@@ -154,10 +166,11 @@ export const api = {
     
     if (error) throw error;
 
+    const plainText = stripHtmlTags(data.content);
     return {
       id: data.id,
       title: data.title,
-      excerpt: data.content.substring(0, 100) + '...',
+      excerpt: plainText.substring(0, 150) + '...',
       content: data.content,
       date: new Date(data.published_at).toLocaleDateString(),
       category: data.category,

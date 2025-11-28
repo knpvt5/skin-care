@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { api } from '../services/api';
 import type { Product, BlogPost } from '../types/types';
+import TipTapEditor from '../components/TipTapEditor';
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages'>('product');
@@ -375,13 +376,11 @@ const Admin: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Content (HTML)</label>
-              <textarea
-                value={blogForm.content}
-                onChange={e => setBlogForm({...blogForm, content: e.target.value})}
-                className="w-full px-3 py-2 border rounded-lg h-48 font-mono text-sm"
-                required
-              ></textarea>
+              <label className="block text-sm font-medium mb-2">Content</label>
+              <TipTapEditor
+                content={blogForm.content}
+                onChange={(content) => setBlogForm({...blogForm, content})}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Tags (comma separated)</label>

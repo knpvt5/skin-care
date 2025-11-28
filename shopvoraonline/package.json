@@ -12,6 +12,11 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.86.0",
     "@tailwindcss/vite": "^4.1.17",
+    "@tiptap/extension-image": "^3.11.1",
+    "@tiptap/extension-link": "^3.11.1",
+    "@tiptap/extension-text-align": "^3.11.1",
+    "@tiptap/react": "^3.11.1",
+    "@tiptap/starter-kit": "^3.11.1",
     "@types/react-helmet": "^6.1.11",
     "lucide-react": "^0.554.0",
     "react": "^19.2.0",

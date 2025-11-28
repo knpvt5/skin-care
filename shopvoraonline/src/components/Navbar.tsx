@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar: React.FC = () => {
@@ -32,7 +32,9 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-4">
             {user ? (
               <div className="hidden md:flex items-center gap-4">
-                <span className="text-sm font-medium text-stone-700">Hi, {user.user_metadata.full_name?.split(' ')[0] || 'User'}</span>
+                <Link to="/profile" className="text-sm font-medium text-stone-700 hover:text-rose-600 transition-colors">
+                  Hi, {user.user_metadata.full_name?.split(' ')[0] || 'User'}
+                </Link>
                 <button 
                   onClick={() => signOut()}
                   className="p-2 text-stone-600 hover:text-rose-600 transition-colors"

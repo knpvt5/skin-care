@@ -2,6 +2,20 @@ import { supabase } from '../lib/supabase';
 import type { Product, BlogPost } from '../data/data';
 
 export const api = {
+  // Auth
+  auth: {
+    getProfile: async (userId: string) => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
+  },
+
   // Contact
   submitContact: async (data: { name: string; email: string; subject: string; message: string }) => {
     const { error } = await supabase
@@ -132,4 +146,3 @@ export const api = {
     return data;
   }
 };
-

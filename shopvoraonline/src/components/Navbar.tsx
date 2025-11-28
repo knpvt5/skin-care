@@ -1,79 +1,57 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, Search, ShoppingBag, ChevronDown } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, User, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const location = useLocation();
+  const { user, signOut } = useAuth();
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-100 shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="shrink-0 flex items-center">
-            <Link to="/" className="text-2xl font-serif font-bold text-stone-800 tracking-tighter">
-              ShopVora<span className="text-rose-400">.</span>
-            </Link>
-          </div>
+          <Link to="/" className="font-serif text-2xl font-bold tracking-tight">
+            ShopVora<span className="text-rose-500">Online</span>
+          </Link>
 
-          {/* Desktop Menu */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <NavLink to="/" className={({ isActive }) => `text-sm font-medium transition-colors hover:text-rose-500 ${isActive ? 'text-rose-500' : 'text-stone-600'}`}>
-              Home
-            </NavLink>
-            <NavLink to="/about" className={({ isActive }) => `text-sm font-medium transition-colors hover:text-rose-500 ${isActive ? 'text-rose-500' : 'text-stone-600'}`}>
-              About
-            </NavLink>
-            
-            {/* Blog Dropdown */}
-            <div className="relative group">
-              <button 
-                className="flex items-center text-sm font-medium text-stone-600 hover:text-rose-500 focus:outline-none"
-                onMouseEnter={() => setIsDropdownOpen(true)}
-                onMouseLeave={() => setIsDropdownOpen(false)}
-              >
-                Blog <ChevronDown className="ml-1 w-4 h-4" />
-              </button>
-              
-              {/* Dropdown Content */}
-              <div 
-                className={`absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg py-1 border border-stone-100 transition-all duration-200 ${isDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}
-                onMouseEnter={() => setIsDropdownOpen(true)}
-                onMouseLeave={() => setIsDropdownOpen(false)}
-              >
-                <Link to="/blog?category=Acne Care" className="block px-4 py-2 text-sm text-stone-700 hover:bg-rose-50 hover:text-rose-600">Acne Care</Link>
-                <Link to="/blog?category=Anti-Aging" className="block px-4 py-2 text-sm text-stone-700 hover:bg-rose-50 hover:text-rose-600">Anti-Aging</Link>
-                <Link to="/blog?category=K-Beauty" className="block px-4 py-2 text-sm text-stone-700 hover:bg-rose-50 hover:text-rose-600">K-Beauty</Link>
-                <Link to="/blog?category=Routines" className="block px-4 py-2 text-sm text-stone-700 hover:bg-rose-50 hover:text-rose-600">Routines</Link>
-                <Link to="/blog" className="block px-4 py-2 text-sm font-semibold text-rose-500 hover:bg-rose-50">All Posts</Link>
+            <Link to="/" className={`text-sm font-medium transition-colors ${isActive('/') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Home</Link>
+            <Link to="/about" className={`text-sm font-medium transition-colors ${isActive('/about') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>About</Link>
+            <Link to="/blog" className={`text-sm font-medium transition-colors ${isActive('/blog') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Blog</Link>
+            <Link to="/guide" className={`text-sm font-medium transition-colors ${isActive('/guide') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Skincare Guide</Link>
+            <Link to="/contact" className={`text-sm font-medium transition-colors ${isActive('/contact') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Contact</Link>
+          </div>
+
+          {/* Auth / Mobile Menu Button */}
+          <div className="flex items-center gap-4">
+            {user ? (
+              <div className="hidden md:flex items-center gap-4">
+                <span className="text-sm font-medium text-stone-700">Hi, {user.user_metadata.full_name?.split(' ')[0] || 'User'}</span>
+                <button 
+                  onClick={() => signOut()}
+                  className="p-2 text-stone-600 hover:text-rose-600 transition-colors"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
               </div>
-            </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-4">
+                <Link to="/login" className="text-sm font-medium text-stone-600 hover:text-stone-900">Login</Link>
+                <Link to="/signup" className="px-4 py-2 bg-stone-900 text-white text-sm font-medium rounded-full hover:bg-stone-800 transition-colors">Sign Up</Link>
+              </div>
+            )}
 
-            <NavLink to="/guide" className={({ isActive }) => `text-sm font-medium transition-colors hover:text-rose-500 ${isActive ? 'text-rose-500' : 'text-stone-600'}`}>
-              Skincare Guide
-            </NavLink>
-            <NavLink to="/contact" className={({ isActive }) => `text-sm font-medium transition-colors hover:text-rose-500 ${isActive ? 'text-rose-500' : 'text-stone-600'}`}>
-              Contact
-            </NavLink>
-          </div>
-
-          {/* Icons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <button className="text-stone-500 hover:text-rose-500 transition-colors">
-              <Search className="w-5 h-5" />
-            </button>
-            <button className="text-stone-500 hover:text-rose-500 transition-colors relative">
-              <ShoppingBag className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <button onClick={toggleMenu} className="text-stone-600 hover:text-rose-500 focus:outline-none">
+            <button 
+              className="md:hidden p-2 text-stone-600"
+              onClick={() => setIsOpen(!isOpen)}
+            >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -82,13 +60,27 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-stone-100">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <NavLink to="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-rose-500 hover:bg-rose-50">Home</NavLink>
-            <NavLink to="/about" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-rose-500 hover:bg-rose-50">About</NavLink>
-            <NavLink to="/blog" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-rose-500 hover:bg-rose-50">Blog</NavLink>
-            <NavLink to="/guide" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-rose-500 hover:bg-rose-50">Skincare Guide</NavLink>
-            <NavLink to="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-rose-500 hover:bg-rose-50">Contact</NavLink>
+        <div className="md:hidden bg-white border-t border-stone-100 absolute w-full">
+          <div className="px-4 pt-2 pb-6 space-y-2">
+            <Link to="/" className="block py-3 text-base font-medium text-stone-600 border-b border-stone-50" onClick={() => setIsOpen(false)}>Home</Link>
+            <Link to="/about" className="block py-3 text-base font-medium text-stone-600 border-b border-stone-50" onClick={() => setIsOpen(false)}>About</Link>
+            <Link to="/blog" className="block py-3 text-base font-medium text-stone-600 border-b border-stone-50" onClick={() => setIsOpen(false)}>Blog</Link>
+            <Link to="/guide" className="block py-3 text-base font-medium text-stone-600 border-b border-stone-50" onClick={() => setIsOpen(false)}>Skincare Guide</Link>
+            <Link to="/contact" className="block py-3 text-base font-medium text-stone-600 border-b border-stone-50" onClick={() => setIsOpen(false)}>Contact</Link>
+            
+            {user ? (
+              <button 
+                onClick={() => { signOut(); setIsOpen(false); }}
+                className="block w-full text-left py-3 text-base font-medium text-rose-600"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <div className="pt-4 flex flex-col gap-3">
+                <Link to="/login" className="block w-full text-center py-3 border border-stone-200 rounded-lg font-medium" onClick={() => setIsOpen(false)}>Login</Link>
+                <Link to="/signup" className="block w-full text-center py-3 bg-stone-900 text-white rounded-lg font-medium" onClick={() => setIsOpen(false)}>Sign Up</Link>
+              </div>
+            )}
           </div>
         </div>
       )}

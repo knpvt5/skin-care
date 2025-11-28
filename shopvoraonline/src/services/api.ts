@@ -79,6 +79,16 @@ export const api = {
     return data;
   },
 
+  deleteProduct: async (id: string) => {
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  },
+
   // Blogs
   getBlogPosts: async () => {
     const { data, error } = await supabase
@@ -144,5 +154,15 @@ export const api = {
     
     if (error) throw error;
     return data;
+  },
+
+  deleteBlogPost: async (id: string) => {
+    const { error } = await supabase
+      .from('blogs')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
   }
 };

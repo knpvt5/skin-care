@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { api } from '../services/api';
@@ -56,6 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    toast.success("User logged out");
     setRole(null);
     setUser(null);
   };

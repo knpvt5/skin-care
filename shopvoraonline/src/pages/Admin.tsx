@@ -1,13 +1,39 @@
-import React, { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Loader2, Trash2, RefreshCw } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { api } from '../services/api';
+import type { Product, BlogPost } from '../data/data';
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages'>('product');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  
+  // Content Management State
+  const [products, setProducts] = useState<Product[]>([]);
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [fetchingContent, setFetchingContent] = useState(true);
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    setFetchingContent(true);
+    try {
+      const [productsData, blogsData] = await Promise.all([
+        api.getProducts(),
+        api.getBlogPosts()
+      ]);
+      setProducts(productsData);
+      setBlogs(blogsData);
+    } catch (err) {
+      console.error('Error fetching content:', err);
+    } finally {
+      setFetchingContent(false);
+    }
+  };
 
   // Product Form State
   const [productForm, setProductForm] = useState({
@@ -47,6 +73,7 @@ const Admin: React.FC = () => {
       });
       setMessage({ type: 'success', text: 'Product created successfully!' });
       setProductForm({ name: '', brand: '', price: '', image: '', tags: '', amazonLink: '', description: '' });
+      fetchContent(); // Refresh list
     } catch (err) {
       console.error(err);
       setMessage({ type: 'error', text: 'Failed to create product.' });
@@ -79,11 +106,36 @@ const Admin: React.FC = () => {
       });
       setMessage({ type: 'success', text: 'Blog post created successfully!' });
       setBlogForm({ title: '', content: '', category: '', image_url: '', read_time: 5, tags: '' });
+      fetchContent(); // Refresh list
     } catch (err: any) {
       console.error(err);
       setMessage({ type: 'error', text: 'Failed to create blog post.' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this product?')) return;
+    try {
+      await api.deleteProduct(id);
+      setProducts(products.filter(p => p.id !== id));
+      setMessage({ type: 'success', text: 'Product deleted successfully' });
+    } catch (err) {
+      console.error(err);
+      setMessage({ type: 'error', text: 'Failed to delete product' });
+    }
+  };
+
+  const handleDeleteBlog = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this blog post?')) return;
+    try {
+      await api.deleteBlogPost(id);
+      setBlogs(blogs.filter(b => b.id !== id));
+      setMessage({ type: 'success', text: 'Blog post deleted successfully' });
+    } catch (err) {
+      console.error(err);
+      setMessage({ type: 'error', text: 'Failed to delete blog post' });
     }
   };
 
@@ -304,6 +356,68 @@ const Admin: React.FC = () => {
         {activeTab === 'messages' && (
           <MessagesTab />
         )}
+
+        {/* Content Management Section */}
+        <div className="mt-12">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-serif font-bold text-stone-900">Manage Content</h2>
+            <button 
+              onClick={fetchContent} 
+              className="p-2 text-stone-600 hover:text-stone-900 transition-colors"
+              title="Refresh Content"
+            >
+              <RefreshCw className={`w-5 h-5 ${fetchingContent ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Products List */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+              <h3 className="text-lg font-bold text-stone-900 mb-4">Products ({products.length})</h3>
+              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                {products.length === 0 ? (
+                  <p className="text-stone-500 text-sm">No products found.</p>
+                ) : (
+                  products.map(product => (
+                    <div key={product.id} className="flex justify-between items-center p-3 bg-stone-50 rounded-lg group">
+                      <span className="font-medium text-stone-800 truncate mr-4">{product.name}</span>
+                      <button
+                        onClick={() => handleDeleteProduct(product.id)}
+                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                        title="Delete Product"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Blogs List */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+              <h3 className="text-lg font-bold text-stone-900 mb-4">Blog Posts ({blogs.length})</h3>
+              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                {blogs.length === 0 ? (
+                  <p className="text-stone-500 text-sm">No blog posts found.</p>
+                ) : (
+                  blogs.map(blog => (
+                    <div key={blog.id} className="flex justify-between items-center p-3 bg-stone-50 rounded-lg group">
+                      <span className="font-medium text-stone-800 truncate mr-4">{blog.title}</span>
+                      <button
+                        onClick={() => handleDeleteBlog(blog.id)}
+                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                        title="Delete Blog Post"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Layout>
   );
@@ -314,7 +428,7 @@ const MessagesTab: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchMessages = async () => {
       try {
         const data = await api.getContactMessages();

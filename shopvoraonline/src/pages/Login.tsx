@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,6 +25,7 @@ const Login: React.FC = () => {
       });
 
       if (error) throw error;
+      toast.success("User logged in");
       navigate('/');
     } catch (err: any) {
       setError(err.message);

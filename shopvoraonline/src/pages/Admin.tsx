@@ -379,11 +379,22 @@ const Admin: React.FC = () => {
                   <p className="text-stone-500 text-sm">No products found.</p>
                 ) : (
                   products.map(product => (
-                    <div key={product.id} className="flex justify-between items-center p-3 bg-stone-50 rounded-lg group">
-                      <span className="font-medium text-stone-800 truncate mr-4">{product.name}</span>
+                    <div key={product.id} className="flex justify-between items-start p-3 bg-stone-50 rounded-lg group">
+                      <div className="flex-1 mr-4">
+                        <div className="font-medium text-stone-800">{product.name}</div>
+                        {product.tags && product.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {product.tags.map((tag, idx) => (
+                              <span key={idx} className="text-xs px-2 py-0.5 bg-stone-200 text-stone-600 rounded">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <button
                         onClick={() => handleDeleteProduct(product.id)}
-                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer flex-shrink-0"
                         title="Delete Product"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -402,11 +413,22 @@ const Admin: React.FC = () => {
                   <p className="text-stone-500 text-sm">No blog posts found.</p>
                 ) : (
                   blogs.map(blog => (
-                    <div key={blog.id} className="flex justify-between items-center p-3 bg-stone-50 rounded-lg group">
-                      <span className="font-medium text-stone-800 truncate mr-4">{blog.title}</span>
+                    <div key={blog.id} className="flex justify-between items-start p-3 bg-stone-50 rounded-lg group">
+                      <div className="flex-1 mr-4">
+                        <div className="font-medium text-stone-800">{blog.title}</div>
+                        {blog.tags && blog.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {blog.tags.map((tag, idx) => (
+                              <span key={idx} className="text-xs px-2 py-0.5 bg-stone-200 text-stone-600 rounded">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <button
                         onClick={() => handleDeleteBlog(blog.id)}
-                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                        className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer flex-shrink-0"
                         title="Delete Blog Post"
                       >
                         <Trash2 className="w-4 h-4" />

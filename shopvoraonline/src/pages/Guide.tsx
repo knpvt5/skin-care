@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
 import { api } from '../services/api';
-import type { Product } from '../data/data';
+import type { Product } from '../types/types';
 
 const Guide: React.FC = () => {
   const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);

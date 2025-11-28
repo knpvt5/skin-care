@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
-import type { Product } from '../data/data';
+import type { Product } from '../types/types';
 
 interface ProductCardProps {
   product: Product;

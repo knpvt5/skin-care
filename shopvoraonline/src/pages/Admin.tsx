@@ -3,7 +3,7 @@ import { Loader2, Trash2, RefreshCw } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { api } from '../services/api';
-import type { Product, BlogPost } from '../data/data';
+import type { Product, BlogPost } from '../types/types';
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages'>('product');

@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { Product, BlogPost } from '../data/data';
+import type { Product, BlogPost } from '../types/types';
 
 export const api = {
   // Auth
@@ -102,13 +102,14 @@ export const api = {
     return data.map((post: any) => ({
       id: post.id,
       title: post.title,
-      excerpt: post.content.substring(0, 100) + '...', // Generate excerpt if missing
+      excerpt: post.content.substring(0, 100) + '...',
       content: post.content,
       date: new Date(post.published_at).toLocaleDateString(),
       category: post.category,
+      tags: post.tags,
       image: post.image_url,
       readTime: post.read_time + ' min read',
-      relatedProducts: [], // Not in DB schema yet
+      relatedProducts: [],
     })) as BlogPost[];
   },
 
@@ -128,6 +129,7 @@ export const api = {
       content: data.content,
       date: new Date(data.published_at).toLocaleDateString(),
       category: data.category,
+      tags: data.tags,
       image: data.image_url,
       readTime: data.read_time + ' min read',
       relatedProducts: [],

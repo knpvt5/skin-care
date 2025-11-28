@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import BlogCard from '../components/BlogCard';
 import { api } from '../services/api';
-import type { BlogPost } from '../data/data';
+import type { BlogPost } from '../types/types';
 
 const Blog: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();

@@ -5,22 +5,28 @@ import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
 import { api } from '../services/api';
-import { products } from '../data/data';
-import type { BlogPost as BlogPostType } from '../data/data';
+import type { BlogPost as BlogPostType, Product } from '../types/types';
 
 const BlogPost: React.FC = () => {
   const { title } = useParams<{ title: string }>();
   const [post, setPost] = useState<BlogPostType | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchData = async () => {
       if (!title) return;
       try {
         const decodedTitle = decodeURIComponent(title);
-        const data = await api.getBlogPost(decodedTitle);
-        setPost(data);
+        const postData = await api.getBlogPost(decodedTitle);
+        setPost(postData);
+
+        const productsData = await api.getProducts();
+        const related = productsData.filter(p => 
+          p.tags.some(tag => postData.tags.includes(tag))
+        );
+        setRelatedProducts(related);
       } catch (err) {
         console.error(err);
         setError('Article not found');
@@ -29,7 +35,7 @@ const BlogPost: React.FC = () => {
       }
     };
 
-    fetchPost();
+    fetchData();
   }, [title]);
 
   if (loading) {
@@ -53,7 +59,7 @@ const BlogPost: React.FC = () => {
     );
   }
 
-  const relatedProducts = products.filter(p => post.relatedProducts.includes(p.id));
+
 
   return (
     <Layout>

@@ -6,7 +6,7 @@ import SEO from '../components/SEO';
 import BlogCard from '../components/BlogCard';
 import ProductCard from '../components/ProductCard';
 import { api } from '../services/api';
-import type { Product, BlogPost } from '../data/data';
+import type { Product, BlogPost } from '../types/types';
 
 const Home: React.FC = () => {
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);

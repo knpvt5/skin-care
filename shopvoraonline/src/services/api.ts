@@ -55,6 +55,44 @@ export const api = {
     return true;
   },
 
+  // Newsletter
+  subscribeToNewsletter: async (email: string, source: string = 'website') => {
+    const { data, error } = await supabase
+      .from('subscribers')
+      .insert([{ email, source }])
+      .select()
+      .single();
+    
+    if (error) {
+      // Check if error is due to duplicate email
+      if (error.code === '23505') {
+        throw new Error('This email is already subscribed to our newsletter.');
+      }
+      throw error;
+    }
+    return data;
+  },
+
+  getSubscribers: async () => {
+    const { data, error } = await supabase
+      .from('subscribers')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data;
+  },
+
+  getUsers: async () => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data;
+  },
+
   // Products
   getProducts: async () => {
     const { data, error } = await supabase

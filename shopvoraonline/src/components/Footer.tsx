@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Mail } from 'lucide-react';
+import { api } from '../services/api';
 
 const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<{ type: 'success' | 'error' | ''; message: string }>({ type: '', message: '' });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setStatus({ type: '', message: '' });
+
+    try {
+      await api.subscribeToNewsletter(email, 'footer');
+      setStatus({ type: 'success', message: '✓ Subscribed!' });
+      setEmail('');
+    } catch (err: any) {
+      setStatus({ 
+        type: 'error', 
+        message: err.message || 'Failed to subscribe' 
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-stone-50 border-t border-stone-200 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,18 +75,28 @@ const Footer: React.FC = () => {
             <p className="mt-4 text-sm text-stone-500">
               Subscribe to get the latest skincare tips and exclusive offers.
             </p>
-            <form className="mt-4 flex flex-col space-y-2">
+            <form onSubmit={handleSubmit} className="mt-4 flex flex-col space-y-2">
               <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="px-4 py-2 border border-stone-200 rounded-md focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-400 text-sm"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={submitting}
+                className="px-4 py-2 border border-stone-200 rounded-md focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-400 text-sm disabled:opacity-50"
               />
               <button 
-                type="submit" 
-                className="px-4 py-2 bg-stone-900 text-white text-sm font-medium rounded-md hover:bg-stone-800 transition-colors cursor-pointer"
+                type="submit"
+                disabled={submitting}
+                className="px-4 py-2 bg-stone-900 text-white text-sm font-medium rounded-md hover:bg-stone-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Subscribe
+                {submitting ? 'Subscribing...' : 'Subscribe'}
               </button>
+              {status.message && (
+                <p className={`text-xs ${status.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                  {status.message}
+                </p>
+              )}
             </form>
           </div>
         </div>

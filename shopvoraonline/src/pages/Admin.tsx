@@ -7,7 +7,7 @@ import type { Product, BlogPost } from '../types/types';
 import TipTapEditor from '../components/TipTapEditor';
 
 const Admin: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages'>('product');
+  const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages' | 'users'>('product');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   
@@ -229,6 +229,16 @@ const Admin: React.FC = () => {
           >
             Messages
           </button>
+          <button
+            onClick={() => setActiveTab('users')}
+            className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
+              activeTab === 'users' 
+                ? 'border-b-2 border-stone-900 text-stone-900' 
+                : 'text-stone-500 hover:text-stone-900'
+            }`}
+          >
+            Users & Subscribers
+          </button>
         </div>
 
         {/* Message */}
@@ -314,13 +324,27 @@ const Admin: React.FC = () => {
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer"
-            >
-              {loading ? <Loader2 className="animate-spin" /> : editingProductId ? 'Update Product' : 'Create Product'}
-            </button>
+            <div className="flex gap-3">
+              {editingProductId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingProductId(null);
+                    setProductForm({ name: '', brand: '', price: '', image: '', tags: '', amazonLink: '', description: '' });
+                  }}
+                  className="flex-1 py-3 bg-stone-200 text-stone-800 font-bold rounded-lg hover:bg-stone-300 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+              )}
+              <button
+                type="submit"
+                disabled={loading}
+                className={`${editingProductId ? 'flex-1' : 'w-full'} py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer`}
+              >
+                {loading ? <Loader2 className="animate-spin" /> : editingProductId ? 'Update Product' : 'Create Product'}
+              </button>
+            </div>
           </form>
         )}
 
@@ -391,19 +415,38 @@ const Admin: React.FC = () => {
                 className="w-full px-3 py-2 border rounded-lg"
               />
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer"
-            >
-                            {loading ? <Loader2 className="animate-spin" /> : editingBlogId ? 'Update Blog Post' : 'Create Blog Post'}
-            </button>
+            <div className="flex gap-3">
+              {editingBlogId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingBlogId(null);
+                    setBlogForm({ title: '', content: '', category: '', image_url: '', read_time: 5, tags: '' });
+                  }}
+                  className="flex-1 py-3 bg-stone-200 text-stone-800 font-bold rounded-lg hover:bg-stone-300 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+              )}
+              <button
+                type="submit"
+                disabled={loading}
+                className={`${editingBlogId ? 'flex-1' : 'w-full'} py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer`}
+              >
+                {loading ? <Loader2 className="animate-spin" /> : editingBlogId ? 'Update Blog Post' : 'Create Blog Post'}
+              </button>
+            </div>
           </form>
         )}
 
         {/* Messages Tab */}
         {activeTab === 'messages' && (
           <MessagesTab />
+        )}
+
+        {/* Users & Subscribers Tab */}
+        {activeTab === 'users' && (
+          <UsersSubscribersTab />
         )}
 
         {/* Content Management Section */}
@@ -574,6 +617,94 @@ const MessagesTab: React.FC = () => {
           </div>
         ))
       )}
+    </div>
+  );
+};
+
+const UsersSubscribersTab: React.FC = () => {
+  const [subscribers, setSubscribers] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [subscribersData, usersData] = await Promise.all([
+          api.getSubscribers(),
+          api.getUsers()
+        ]);
+        setSubscribers(subscribersData || []);
+        setUsers(usersData || []);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>;
+  if (error) return <div className="text-red-500 py-4">{error}</div>;
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Newsletter Subscribers */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+        <h3 className="text-lg font-bold text-stone-900 mb-4">Newsletter Subscribers ({subscribers.length})</h3>
+        <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+          {subscribers.length === 0 ? (
+            <p className="text-stone-500 text-sm">No subscribers found.</p>
+          ) : (
+            subscribers.map((subscriber) => (
+              <div key={subscriber.id} className="p-3 bg-stone-50 rounded-lg">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <p className="font-medium text-stone-800">{subscriber.email}</p>
+                    <div className="flex gap-2 mt-1">
+                      <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded">
+                        {subscriber.source}
+                      </span>
+                      <span className="text-xs text-stone-500">
+                        {new Date(subscriber.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Registered Users */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+        <h3 className="text-lg font-bold text-stone-900 mb-4">Registered Users ({users.length})</h3>
+        <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+          {users.length === 0 ? (
+            <p className="text-stone-500 text-sm">No registered users found.</p>
+          ) : (
+            users.map((user) => (
+              <div key={user.id} className="p-3 bg-stone-50 rounded-lg">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <p className="font-medium text-stone-800">{user.email}</p>
+                    {user.full_name && (
+                      <p className="text-sm text-stone-600">{user.full_name}</p>
+                    )}
+                    <span className="text-xs text-stone-500">
+                      Joined: {new Date(user.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 };

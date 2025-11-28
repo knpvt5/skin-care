@@ -12,6 +12,9 @@ const Home: React.FC = () => {
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<{ type: 'success' | 'error' | ''; message: string }>({ type: '', message: '' });
+  const [subscribing, setSubscribing] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +34,25 @@ const Home: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubscribing(true);
+    setNewsletterStatus({ type: '', message: '' });
+
+    try {
+      await api.subscribeToNewsletter(newsletterEmail, 'home-page');
+      setNewsletterStatus({ type: 'success', message: '🎉 Successfully subscribed!' });
+      setNewsletterEmail('');
+    } catch (err: any) {
+      setNewsletterStatus({ 
+        type: 'error', 
+        message: err.message || 'Failed to subscribe. Please try again.' 
+      });
+    } finally {
+      setSubscribing(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -165,19 +187,29 @@ const Home: React.FC = () => {
           <p className="text-stone-300 mb-10 text-lg">
             Get weekly routines, product drops, and exclusive guides delivered straight to your inbox. No spam, just glow.
           </p>
-          <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input 
               type="email" 
-              placeholder="Your email address" 
-              className="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-500 backdrop-blur-sm"
+              placeholder="Your email address"
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              required
+              disabled={subscribing}
+              className="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-500 backdrop-blur-sm disabled:opacity-50"
             />
             <button 
-              type="submit" 
-              className="px-8 py-4 bg-rose-500 text-white font-bold rounded-full hover:bg-rose-600 transition-colors shadow-lg hover:shadow-rose-500/25 cursor-pointer"
+              type="submit"
+              disabled={subscribing}
+              className="px-8 py-4 bg-rose-500 text-white font-bold rounded-full hover:bg-rose-600 transition-colors shadow-lg hover:shadow-rose-500/25 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Subscribe
+              {subscribing ? 'Subscribing...' : 'Subscribe'}
             </button>
           </form>
+          {newsletterStatus.message && (
+            <p className={`mt-4 text-sm ${newsletterStatus.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+              {newsletterStatus.message}
+            </p>
+          )}
         </div>
       </section>
     </Layout>

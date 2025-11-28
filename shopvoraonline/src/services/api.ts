@@ -110,6 +110,17 @@ export const api = {
     } as BlogPost;
   },
 
+  checkBlogPostExists: async (title: string) => {
+    const { data, error } = await supabase
+      .from('blogs')
+      .select('id')
+      .eq('title', title)
+      .maybeSingle();
+    
+    if (error) throw error;
+    return !!data;
+  },
+
   createBlogPost: async (post: { title: string; content: string; category: string; image_url: string; read_time: number; tags: string[] }) => {
     const { data, error } = await supabase
       .from('blogs')

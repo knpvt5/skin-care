@@ -61,6 +61,14 @@ const Admin: React.FC = () => {
     setMessage({ type: '', text: '' });
 
     try {
+      // Check for duplicate title
+      const exists = await api.checkBlogPostExists(blogForm.title);
+      if (exists) {
+        setMessage({ type: 'error', text: 'A blog post with this title already exists. Please choose a different title.' });
+        setLoading(false);
+        return;
+      }
+
       await api.createBlogPost({
         title: blogForm.title,
         content: blogForm.content,
@@ -73,11 +81,7 @@ const Admin: React.FC = () => {
       setBlogForm({ title: '', content: '', category: '', image_url: '', read_time: 5, tags: '' });
     } catch (err: any) {
       console.error(err);
-      if (err.code === '23505') { // Postgres unique violation code
-        setMessage({ type: 'error', text: 'A blog post with this title already exists. Please choose a different title.' });
-      } else {
-        setMessage({ type: 'error', text: 'Failed to create blog post.' });
-      }
+      setMessage({ type: 'error', text: 'Failed to create blog post.' });
     } finally {
       setLoading(false);
     }
@@ -233,13 +237,19 @@ const Admin: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-1">Category</label>
-                <input
-                  type="text"
+                <select
                   value={blogForm.category}
                   onChange={e => setBlogForm({...blogForm, category: e.target.value})}
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full px-3 py-2 border rounded-lg bg-white"
                   required
-                />
+                >
+                  <option value="">Select Category</option>
+                  <option value="Acne Care">Acne Care</option>
+                  <option value="Anti-Aging">Anti-Aging</option>
+                  <option value="K-Beauty">K-Beauty</option>
+                  <option value="Routines">Routines</option>
+                  <option value="Ingredient Explanations">Ingredient Explanations</option>
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Read Time (min)</label>
@@ -283,7 +293,7 @@ const Admin: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center"
+              className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer"
             >
               {loading ? <Loader2 className="animate-spin" /> : 'Create Blog Post'}
             </button>

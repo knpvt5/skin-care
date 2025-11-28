@@ -11,6 +11,7 @@ import Admin from './pages/Admin';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
 
 import { Toaster } from 'react-hot-toast';
 
@@ -37,6 +38,9 @@ function App() {
         <Route element={<ProtectedRoute adminOnly={true} />}>
           <Route path="/admin" element={<Admin />} />
         </Route>
+
+        {/* 404 Route */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   );

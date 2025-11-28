@@ -46,6 +46,17 @@ const Signup: React.FC = () => {
   };
 
   const [resendLoading, setResendLoading] = useState(false);
+  const [timer, setTimer] = useState(60);
+
+  React.useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    if (success && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [success, timer]);
 
   const handleResendEmail = async () => {
     setResendLoading(true);
@@ -56,6 +67,7 @@ const Signup: React.FC = () => {
       });
       if (error) throw error;
       alert('Verification email sent!');
+      setTimer(60);
     } catch (err: any) {
       alert('Error sending email: ' + err.message);
     } finally {
@@ -84,13 +96,19 @@ const Signup: React.FC = () => {
               >
                 Return to Login
               </Link>
-              <button
-                onClick={handleResendEmail}
-                disabled={resendLoading}
-                className="block w-full py-3 bg-white text-stone-600 font-medium rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors disabled:opacity-70 cursor-pointer"
-              >
-                {resendLoading ? 'Sending...' : 'Resend Verification Email'}
-              </button>
+              {timer > 0 ? (
+                <p className="text-center text-stone-500 text-sm">
+                  Resend available in {timer}s
+                </p>
+              ) : (
+                <button
+                  onClick={handleResendEmail}
+                  disabled={resendLoading}
+                  className="block w-full py-3 bg-white text-stone-600 font-medium rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors disabled:opacity-70 cursor-pointer"
+                >
+                  {resendLoading ? 'Sending...' : 'Resend Verification Email'}
+                </button>
+              )}
             </div>
           </div>
         </div>

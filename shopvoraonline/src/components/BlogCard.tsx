@@ -10,7 +10,7 @@ interface BlogCardProps {
 const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   return (
     <article className="flex flex-col h-full group">
-      <Link to={`/blog/${post.id}`} className="block overflow-hidden rounded-2xl mb-4 aspect-4/3">
+      <Link to={`/blog/${encodeURIComponent(post.title)}`} className="block overflow-hidden rounded-2xl mb-4 aspect-4/3">
         <img 
           src={post.image} 
           alt={post.title} 
@@ -25,7 +25,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
         </div>
         
         <h3 className="text-xl font-bold text-stone-900 mb-2 leading-tight group-hover:text-rose-600 transition-colors">
-          <Link to={`/blog/${post.id}`}>
+          <Link to={`/blog/${encodeURIComponent(post.title)}`}>
             {post.title}
           </Link>
         </h3>
@@ -35,7 +35,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
         </p>
         
         <Link 
-          to={`/blog/${post.id}`} 
+          to={`/blog/${encodeURIComponent(post.title)}`} 
           className="inline-flex items-center text-sm font-semibold text-stone-900 hover:text-rose-600 transition-colors mt-auto"
         >
           Read Article <ArrowRight className="w-4 h-4 ml-1" />

@@ -173,7 +173,7 @@ const Home: React.FC = () => {
             />
             <button 
               type="submit" 
-              className="px-8 py-4 bg-rose-500 text-white font-bold rounded-full hover:bg-rose-600 transition-colors shadow-lg hover:shadow-rose-500/25"
+              className="px-8 py-4 bg-rose-500 text-white font-bold rounded-full hover:bg-rose-600 transition-colors shadow-lg hover:shadow-rose-500/25 cursor-pointer"
             >
               Subscribe
             </button>

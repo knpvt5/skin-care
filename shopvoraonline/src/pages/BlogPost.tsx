@@ -5,20 +5,21 @@ import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import ProductCard from '../components/ProductCard';
 import { api } from '../services/api';
-import { products } from '../data/data'; // Still using mock products for related products for now
+import { products } from '../data/data';
 import type { BlogPost as BlogPostType } from '../data/data';
 
 const BlogPost: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { title } = useParams<{ title: string }>();
   const [post, setPost] = useState<BlogPostType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
-      if (!id) return;
+      if (!title) return;
       try {
-        const data = await api.getBlogPost(id);
+        const decodedTitle = decodeURIComponent(title);
+        const data = await api.getBlogPost(decodedTitle);
         setPost(data);
       } catch (err) {
         console.error(err);
@@ -29,7 +30,7 @@ const BlogPost: React.FC = () => {
     };
 
     fetchPost();
-  }, [id]);
+  }, [title]);
 
   if (loading) {
     return (

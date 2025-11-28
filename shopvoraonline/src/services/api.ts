@@ -80,7 +80,6 @@ export const api = {
       title: post.title,
       excerpt: post.content.substring(0, 100) + '...', // Generate excerpt if missing
       content: post.content,
-      // author: 'Vora', // Removed author
       date: new Date(post.published_at).toLocaleDateString(),
       category: post.category,
       image: post.image_url,
@@ -89,11 +88,11 @@ export const api = {
     })) as BlogPost[];
   },
 
-  getBlogPost: async (id: string) => {
+  getBlogPost: async (title: string) => {
     const { data, error } = await supabase
       .from('blogs')
       .select('*')
-      .eq('id', id)
+      .eq('title', title)
       .single();
     
     if (error) throw error;
@@ -122,3 +121,4 @@ export const api = {
     return data;
   }
 };
+

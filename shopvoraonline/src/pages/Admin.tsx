@@ -71,9 +71,13 @@ const Admin: React.FC = () => {
       });
       setMessage({ type: 'success', text: 'Blog post created successfully!' });
       setBlogForm({ title: '', content: '', category: '', image_url: '', read_time: 5, tags: '' });
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Failed to create blog post.' });
+      if (err.code === '23505') { // Postgres unique violation code
+        setMessage({ type: 'error', text: 'A blog post with this title already exists. Please choose a different title.' });
+      } else {
+        setMessage({ type: 'error', text: 'Failed to create blog post.' });
+      }
     } finally {
       setLoading(false);
     }
@@ -206,7 +210,7 @@ const Admin: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center"
+              className="w-full py-3 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition-colors disabled:opacity-70 flex justify-center cursor-pointer"
             >
               {loading ? <Loader2 className="animate-spin" /> : 'Create Product'}
             </button>

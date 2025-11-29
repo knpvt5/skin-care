@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Loader2, Trash2, RefreshCw, Edit } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
@@ -7,7 +8,12 @@ import type { Product, BlogPost } from '../types/types';
 import TipTapEditor from '../components/TipTapEditor';
 
 const Admin: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages' | 'users'>('product');
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  // Get initial tab from URL params, default to 'product'
+  const initialTab = (searchParams.get('tab') as 'product' | 'blog' | 'messages' | 'users') || 'product';
+  const [activeTab, setActiveTab] = useState<'product' | 'blog' | 'messages' | 'users'>(initialTab);
+  
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   
@@ -15,6 +21,12 @@ const Admin: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [fetchingContent, setFetchingContent] = useState(true);
+
+  // Update URL when tab changes
+  const handleTabChange = (tab: 'product' | 'blog' | 'messages' | 'users') => {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  };
 
   useEffect(() => {
     fetchContent();
@@ -162,7 +174,7 @@ const Admin: React.FC = () => {
   };
 
   const handleEditProduct = (product: Product) => {
-    setActiveTab('product');
+    handleTabChange('product');
     setEditingProductId(product.id);
     setProductForm({
       name: product.name,
@@ -177,7 +189,7 @@ const Admin: React.FC = () => {
   };
 
   const handleEditBlog = (blog: BlogPost) => {
-    setActiveTab('blog');
+    handleTabChange('blog');
     setEditingBlogId(blog.id);
     setBlogForm({
       title: blog.title,
@@ -200,7 +212,7 @@ const Admin: React.FC = () => {
         {/* Tabs */}
         <div className="flex gap-4 mb-8 border-b border-stone-200 overflow-x-auto">
           <button
-            onClick={() => setActiveTab('product')}
+            onClick={() => handleTabChange('product')}
             className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
               activeTab === 'product' 
                 ? 'border-b-2 border-stone-900 text-stone-900' 
@@ -210,7 +222,7 @@ const Admin: React.FC = () => {
             Add Product
           </button>
           <button
-            onClick={() => setActiveTab('blog')}
+            onClick={() => handleTabChange('blog')}
             className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
               activeTab === 'blog' 
                 ? 'border-b-2 border-stone-900 text-stone-900' 
@@ -220,7 +232,7 @@ const Admin: React.FC = () => {
             Add Blog Post
           </button>
           <button
-            onClick={() => setActiveTab('messages')}
+            onClick={() => handleTabChange('messages')}
             className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
               activeTab === 'messages' 
                 ? 'border-b-2 border-stone-900 text-stone-900' 
@@ -230,7 +242,7 @@ const Admin: React.FC = () => {
             Messages
           </button>
           <button
-            onClick={() => setActiveTab('users')}
+            onClick={() => handleTabChange('users')}
             className={`pb-4 px-4 font-medium transition-colors whitespace-nowrap ${
               activeTab === 'users' 
                 ? 'border-b-2 border-stone-900 text-stone-900' 
@@ -692,8 +704,13 @@ const UsersSubscribersTab: React.FC = () => {
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <p className="font-medium text-stone-800">{user.email}</p>
-                    {user.full_name && (
-                      <p className="text-sm text-stone-600">{user.full_name}</p>
+                    {user.name && (
+                      <p className="text-sm text-stone-600">{user.name}</p>
+                    )}
+                    {user.role && (
+                      <span className="text-xs px-2 py-0.5 bg-purple-100 text-purple-700 rounded mr-2">
+                        {user.role}
+                      </span>
                     )}
                     <span className="text-xs text-stone-500">
                       Joined: {new Date(user.created_at).toLocaleDateString()}

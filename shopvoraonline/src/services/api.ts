@@ -83,6 +83,16 @@ export const api = {
     return data;
   },
 
+  deleteSubscriber: async (id: string) => {
+    const { error } = await supabase
+      .from('subscribers')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  },
+
   getUsers: async () => {
     const { data, error } = await supabase
       .from('profiles')

@@ -659,6 +659,17 @@ const UsersSubscribersTab: React.FC = () => {
     fetchData();
   }, []);
 
+  const handleDeleteSubscriber = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this subscriber?')) return;
+    try {
+      await api.deleteSubscriber(id);
+      setSubscribers(subscribers.filter(s => s.id !== id));
+    } catch (err) {
+      console.error(err);
+      setError('Failed to delete subscriber');
+    }
+  };
+
   if (loading) return <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>;
   if (error) return <div className="text-red-500 py-4">{error}</div>;
 
@@ -685,6 +696,13 @@ const UsersSubscribersTab: React.FC = () => {
                       </span>
                     </div>
                   </div>
+                  <button
+                    onClick={() => handleDeleteSubscriber(subscriber.id)}
+                    className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                    title="Delete Subscriber"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             ))

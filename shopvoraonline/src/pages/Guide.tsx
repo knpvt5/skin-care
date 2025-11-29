@@ -37,7 +37,12 @@ const Guide: React.FC = () => {
 
   return (
     <Layout>
-      <SEO title="Skincare Guide" description="The ultimate beginner's guide to building a skincare routine." />
+      <SEO 
+        title="Skincare Guide" 
+        description="The ultimate beginner's guide to building an effective skincare routine. Learn the basics, understand your skin type, and discover the perfect products."
+        keywords="skincare guide, beginner skincare, skincare routine, skin types, skincare basics, skincare products guide"
+        url="https://shopvoraonline.com/guide"
+      />
       
       <div className="bg-stone-900 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">

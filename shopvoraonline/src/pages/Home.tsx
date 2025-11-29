@@ -66,7 +66,12 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <SEO title="Home" />
+      <SEO 
+        title="Home" 
+        description="Discover science-backed skincare advice, honest product reviews, and curated routines at ShopVoraOnline. Your journey to radiant skin starts here."
+        keywords="skincare advice, beauty blog, product reviews, skincare routine, radiant skin, beauty tips, skin care products"
+        url="https://shopvoraonline.com"
+      />
       
       {/* Hero Section */}
       <section className="relative bg-rose-50 overflow-hidden">

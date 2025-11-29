@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
@@ -17,32 +18,34 @@ import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
-    <AuthProvider>
-      <Toaster position="top-center" />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:title" element={<BlogPost />} />
-        <Route path="/guide" element={<Guide />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        
-        {/* Protected Routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
+    <HelmetProvider>
+      <AuthProvider>
+        <Toaster position="top-center" />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:title" element={<BlogPost />} />
+          <Route path="/guide" element={<Guide />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
 
-        {/* Protected Admin Route */}
-        <Route element={<ProtectedRoute adminOnly={true} />}>
-          <Route path="/admin" element={<Admin />} />
-        </Route>
+          {/* Protected Admin Route */}
+          <Route element={<ProtectedRoute adminOnly={true} />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
 
-        {/* 404 Route */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AuthProvider>
+          {/* 404 Route */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
 

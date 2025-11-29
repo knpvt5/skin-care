@@ -5,7 +5,12 @@ import SEO from '../components/SEO';
 const About: React.FC = () => {
   return (
     <Layout>
-      <SEO title="About Us" description="Learn about the mission behind ShopVoraOnline." />
+      <SEO 
+        title="About Us" 
+        description="Discover the story behind ShopVoraOnline - your trusted source for honest skincare advice, product reviews, and beauty expertise."
+        keywords="about ShopVoraOnline, skincare experts, beauty blog about, skincare mission"
+        url="https://shopvoraonline.com/about"
+      />
       
       <div className="bg-white py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

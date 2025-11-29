@@ -51,7 +51,12 @@ const Contact: React.FC = () => {
 
   return (
     <Layout>
-      <SEO title="Contact Us" description="Get in touch with the ShopVoraOnline team." />
+      <SEO 
+        title="Contact Us" 
+        description="Have questions about skincare? Get in touch with the ShopVoraOnline team. We'd love to hear from you!"
+        keywords="contact ShopVoraOnline, skincare questions, beauty inquiries, get in touch"
+        url="https://shopvoraonline.com/contact"
+      />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">

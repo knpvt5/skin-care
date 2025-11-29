@@ -484,17 +484,26 @@ const Admin: React.FC = () => {
                 ) : (
                   products.map(product => (
                     <div key={product.id} className="flex justify-between items-start p-3 bg-stone-50 rounded-lg group">
-                      <div className="flex-1 mr-4">
-                        <div className="font-medium text-stone-800">{product.name}</div>
-                        {product.tags && product.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {product.tags.map((tag, idx) => (
-                              <span key={idx} className="text-xs px-2 py-0.5 bg-stone-200 text-stone-600 rounded">
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                      <div className="flex gap-3 flex-1 mr-4">
+                        {product.image && (
+                          <img 
+                            src={product.image} 
+                            alt={product.name}
+                            className="w-12 h-12 object-cover rounded-lg shrink-0"
+                          />
                         )}
+                        <div className="flex-1">
+                          <div className="font-medium text-stone-800">{product.name}</div>
+                          {product.tags && product.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {product.tags.map((tag, idx) => (
+                                <span key={idx} className="text-xs px-2 py-0.5 bg-stone-200 text-stone-600 rounded">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <div className="flex gap-2 shrink-0">
                         <button
@@ -527,17 +536,26 @@ const Admin: React.FC = () => {
                 ) : (
                   blogs.map(blog => (
                     <div key={blog.id} className="flex justify-between items-start p-3 bg-stone-50 rounded-lg group">
-                      <div className="flex-1 mr-4">
-                        <div className="font-medium text-stone-800">{blog.title}</div>
-                        {blog.tags && blog.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {blog.tags.map((tag, idx) => (
-                              <span key={idx} className="text-xs px-2 py-0.5 bg-stone-200 text-stone-600 rounded">
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                      <div className="flex gap-3 flex-1 mr-4">
+                        {blog.image && (
+                          <img 
+                            src={blog.image} 
+                            alt={blog.title}
+                            className="w-12 h-12 object-cover rounded-lg shrink-0"
+                          />
                         )}
+                        <div className="flex-1">
+                          <div className="font-medium text-stone-800">{blog.title}</div>
+                          {blog.tags && blog.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {blog.tags.map((tag, idx) => (
+                                <span key={idx} className="text-xs px-2 py-0.5 bg-stone-200 text-stone-600 rounded">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <div className="flex gap-2 shrink-0">
                         <button

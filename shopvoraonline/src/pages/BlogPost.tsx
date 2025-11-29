@@ -63,7 +63,13 @@ const BlogPost: React.FC = () => {
 
   return (
     <Layout>
-      <SEO title={post.title} description={post.excerpt} image={post.image} />
+      <SEO 
+        title={post.title} 
+        description={post.excerpt} 
+        image={post.image} 
+        keywords={`${post.tags.join(', ')}, skincare, beauty blog`}
+        url={`https://shopvoraonline.com/blog/${encodeURIComponent(post.title)}`}
+      />
       
       <article className="bg-white">
         {/* Header */}

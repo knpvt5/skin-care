@@ -61,7 +61,12 @@ const Blog: React.FC = () => {
 
   return (
     <Layout>
-      <SEO title="Blog" description="Read our latest skincare articles and guides." />
+      <SEO 
+        title="Blog" 
+        description="Explore insightful skincare blogs covering acne care, anti-aging, K-beauty, skincare routines, and ingredient analysis. Expert advice for your best skin."
+        keywords="skincare blog, beauty articles, acne care, anti-aging tips, K-beauty, skincare routines, ingredient analysis, beauty trends"
+        url="https://shopvoraonline.com/blog"
+      />
       
       <div className="bg-stone-50 py-12 border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

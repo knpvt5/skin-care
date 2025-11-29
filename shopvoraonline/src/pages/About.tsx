@@ -8,7 +8,7 @@ const About: React.FC = () => {
       <SEO 
         title="About Us" 
         description="Discover the story behind ShopVoraOnline - your trusted source for honest skincare advice, product reviews, and beauty expertise."
-        keywords="about ShopVoraOnline, skincare experts, beauty blog about, skincare mission"
+        keywords="about ShopVoraOnline, skincare experts, beauty blog about, beauty skin, beauty skincare, natural skin"
         url="https://shopvoraonline.com/about"
       />
       

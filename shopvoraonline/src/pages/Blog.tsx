@@ -64,7 +64,7 @@ const Blog: React.FC = () => {
       <SEO 
         title="Blog" 
         description="Explore insightful skincare blogs covering acne care, anti-aging, K-beauty, skincare routines, and ingredient analysis. Expert advice for your best skin."
-        keywords="skincare blog, beauty articles, acne care, anti-aging tips, K-beauty, skincare routines, ingredient analysis, beauty trends"
+        keywords="skincare blog, beauty articles, acne care, anti-aging tips, K-beauty, papule pimple, differin cream, beta hydroxy acid, dermavive cleanser"
         url="https://shopvoraonline.com/blog"
       />
       

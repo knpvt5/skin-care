@@ -40,7 +40,7 @@ const Guide: React.FC = () => {
       <SEO 
         title="Skincare Guide" 
         description="The ultimate beginner's guide to building an effective skincare routine. Learn the basics, understand your skin type, and discover the perfect products."
-        keywords="skincare guide, beginner skincare, skincare routine, skin types, skincare basics, skincare products guide"
+        keywords="skincare guide, beginner skincare, skincare routine, skin types, advanced skin care, retinol skin, beta hydroxy acid, natural skin"
         url="https://shopvoraonline.com/guide"
       />
       

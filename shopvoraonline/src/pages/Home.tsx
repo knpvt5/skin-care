@@ -69,7 +69,7 @@ const Home: React.FC = () => {
       <SEO 
         title="Home" 
         description="Discover science-backed skincare advice, honest product reviews, and curated routines at ShopVoraOnline. Your journey to radiant skin starts here."
-        keywords="skincare advice, beauty blog, product reviews, skincare routine, radiant skin, beauty tips, skin care products"
+        keywords="skincare advice, beauty blog, product reviews, skincare routine, natural skin, beauty skin, beauty skincare, advanced skin care, retinol skin"
         url="https://shopvoraonline.com"
       />
       

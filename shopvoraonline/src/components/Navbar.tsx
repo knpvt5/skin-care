@@ -15,8 +15,11 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="font-serif text-2xl font-bold tracking-tight">
-            ShopVora<span className="text-rose-500">Online</span>
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/logo.png" alt="ShopVoraOnline Logo" className="h-10 w-10 rounded-full object-contain" />
+            <span className="font-serif text-2xl font-bold tracking-tight">
+              ShopVora<span className="text-rose-500">Online</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

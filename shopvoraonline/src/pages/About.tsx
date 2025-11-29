@@ -43,16 +43,14 @@ const About: React.FC = () => {
             
             <h2 className="text-2xl font-serif font-bold text-stone-900 mt-12 mb-6">Meet the Founder</h2>
             <div className="flex flex-col sm:flex-row gap-8 items-center mb-12">
-              <img 
-                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=300" 
-                alt="Founder" 
-                className="w-32 h-32 rounded-full object-cover shadow-lg"
-              />
+              <div className="w-32 h-32 rounded-full bg-rose-500 flex items-center justify-center shadow-lg">
+                <span className="text-white text-4xl font-bold">SS</span>
+              </div>
               <div>
-                <h3 className="text-xl font-bold text-stone-900">Sarah Vora</h3>
-                <p className="text-rose-500 font-medium mb-2">Founder & Editor-in-Chief</p>
+                <h3 className="text-xl font-bold text-stone-900">Siddharth Selvam</h3>
+                <p className="text-rose-500 font-medium mb-2">Founder</p>
                 <p className="text-stone-600 text-sm">
-                  A skincare enthusiast turned educator, Sarah started ShopVoraOnline to share her journey of healing her own acne-prone skin.
+                  A skincare enthusiast, Siddharth started ShopVoraOnline to share his journey of skin care.
                 </p>
               </div>
             </div>

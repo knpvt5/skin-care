@@ -113,6 +113,7 @@ const Home: React.FC = () => {
                 <img 
                   src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=1000" 
                   alt="Skincare Routine" 
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               </div>

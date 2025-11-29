@@ -23,13 +23,13 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className={`text-sm font-medium transition-colors ${isActive('/') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Home</Link>
-            <Link to="/about" className={`text-sm font-medium transition-colors ${isActive('/about') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>About</Link>
-            <Link to="/blog" className={`text-sm font-medium transition-colors ${isActive('/blog') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Blog</Link>
-            <Link to="/guide" className={`text-sm font-medium transition-colors ${isActive('/guide') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Skincare Guide</Link>
-            <Link to="/contact" className={`text-sm font-medium transition-colors ${isActive('/contact') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`}>Contact</Link>
-          </div>
+          <nav className="hidden md:flex items-center space-x-8" aria-label="Main navigation">
+            <Link to="/" className={`text-sm font-medium transition-colors ${isActive('/') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`} aria-current={isActive('/') ? 'page' : undefined}>Home</Link>
+            <Link to="/about" className={`text-sm font-medium transition-colors ${isActive('/about') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`} aria-current={isActive('/about') ? 'page' : undefined}>About</Link>
+            <Link to="/blog" className={`text-sm font-medium transition-colors ${isActive('/blog') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`} aria-current={isActive('/blog') ? 'page' : undefined}>Blog</Link>
+            <Link to="/guide" className={`text-sm font-medium transition-colors ${isActive('/guide') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`} aria-current={isActive('/guide') ? 'page' : undefined}>Skincare Guide</Link>
+            <Link to="/contact" className={`text-sm font-medium transition-colors ${isActive('/contact') ? 'text-rose-600' : 'text-stone-600 hover:text-stone-900'}`} aria-current={isActive('/contact') ? 'page' : undefined}>Contact</Link>
+          </nav>
 
           {/* Auth / Mobile Menu Button */}
           <div className="flex items-center gap-4">
@@ -56,6 +56,8 @@ const Navbar: React.FC = () => {
             <button 
               className="md:hidden p-2 text-stone-600"
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>

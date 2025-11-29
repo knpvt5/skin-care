@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and user profile pages
+Disallow: /admin
+Disallow: /profile
+Disallow: /login
+Disallow: /signup
+
+# Allow all other pages
+Allow: /
+Allow: /about
+Allow: /blog
+Allow: /guide
+Allow: /contact
+
+# Sitemap location
+Sitemap: https://shopvoraonline.com/sitemap.xml
+
+# Crawl-delay
+# Crawl-delay: 10

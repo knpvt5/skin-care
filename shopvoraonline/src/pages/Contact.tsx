@@ -54,7 +54,7 @@ const Contact: React.FC = () => {
       <SEO 
         title="Contact Us" 
         description="Have questions about skincare? Get in touch with the ShopVoraOnline team. We'd love to hear from you!"
-        keywords="contact ShopVoraOnline, skincare questions, beauty inquiries, get in touch"
+        keywords="contact ShopVoraOnline, skincare questions, skin care, skincare routine, daily skin care routine at home"
         url="https://shopvoraonline.com/contact"
       />
       

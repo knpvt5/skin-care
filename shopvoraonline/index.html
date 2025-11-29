@@ -8,76 +8,70 @@
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="dns-prefetch" href="https://images.unsplash.com">
   
-  <!-- Google tag (gtag.js) -->
+  <!-- Preconnect for Google Ads domains -->
+  <link rel="preconnect" href="https://googleads.g.doubleclick.net">
+  <link rel="preconnect" href="https://www.google.com">
+  <link rel="preconnect" href="https://www.googleadservices.com">
+  
+  <!-- Google tag (gtag.js) - Load async -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17504329507"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'AW-17504329507');
-  </script>
-
-  <!-- Google tag (gtag.js) event -->
-  <script>
-    gtag('event', 'ads_conversion_Shopping_Cart_1', {
-      // <event_parameters>
-    });
-  </script>
-
-  <!-- Google tag (gtag.js) event - delayed navigation helper -->
-  <script>
-    // Helper function to delay opening a URL until a gtag event is sent.
-    // Call it in response to an action that should navigate to a URL.
-    function gtagSendEvent(url) {
-      var callback = function () {
-        if (typeof url === 'string') {
-          window.location = url;
-        }
-      };
-      gtag('event', 'ads_conversion_Shopping_Cart_1', {
-        'event_callback': callback,
-        'event_timeout': 2000,
-        // <event_parameters>
-      });
-      return false;
-    }
-  </script>
-
-  <!-- Event snippet for [e577] Google for WooCommerce purchase action conversion page -->
-  <script>
-    gtag('event', 'conversion', {
-      'send_to': 'AW-17504329507/LycICKiE-p4bEKO-25pB',
-      'value': 0.0,
-      'currency': 'INR',
-      'transaction_id': ''
-    });
-  </script>
-
-  <!-- Event snippet for [e577] Google for WooCommerce purchase action conversion page
-In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
-  <script>
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof (url) != 'undefined') {
-          window.location = url;
-        }
-      };
-      gtag('event', 'conversion', {
-        'send_to': 'AW-17504329507/LycICKiE-p4bEKO-25pB',
-        'value': 0.0,
-        'currency': 'INR',
-        'transaction_id': '',
-        'event_callback': callback
-      });
-      return false;
-    }
   </script>
 
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>shopvoraonline</title>
+  
+  <!-- Defer conversion tracking scripts to load after page load -->
+  <script>
+    // Load conversion tracking after page is interactive
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initConversionTracking);
+    } else {
+      initConversionTracking();
+    }
+    
+    function initConversionTracking() {
+      // Event snippet - delayed for performance
+      gtag('event', 'ads_conversion_Shopping_Cart_1', {});
+      
+      // Helper function for delayed navigation
+      window.gtagSendEvent = function(url) {
+        var callback = function () {
+          if (typeof url === 'string') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'ads_conversion_Shopping_Cart_1', {
+          'event_callback': callback,
+          'event_timeout': 2000,
+        });
+        return false;
+      };
+      
+      // Conversion tracking function
+      window.gtag_report_conversion = function(url) {
+        var callback = function () {
+          if (typeof (url) != 'undefined') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17504329507/LycICKiE-p4bEKO-25pB',
+          'value': 0.0,
+          'currency': 'INR',
+          'transaction_id': '',
+          'event_callback': callback
+        });
+        return false;
+      };
+    }
+  </script>
 </head>
 
 <body>

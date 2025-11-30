@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 interface SEOProps {
   title: string;
   description?: string;
@@ -31,71 +29,43 @@ const SEO: React.FC<SEOProps> = ({
   const pageUrl = url || siteUrl;
   const pageAuthor = author || defaultAuthor;
 
-  useEffect(() => {
-    // Set title
-    document.title = fullTitle;
+  // React 19 native metadata support - these tags are automatically hoisted to <head>
+  return (
+    <>
+      <title>{fullTitle}</title>
+      
+      {/* Primary Meta Tags */}
+      <meta name="title" content={fullTitle} />
+      <meta name="description" content={pageDescription} />
+      <meta name="keywords" content={pageKeywords} />
+      <meta name="author" content={pageAuthor} />
+      <meta name="robots" content="index, follow" />
+      <meta name="googlebot" content="index, follow" />
 
-    // Helper function to update or create meta tag
-    const updateMetaTag = (selector: string, attribute: string, value: string) => {
-      let element = document.querySelector(selector);
-      if (!element) {
-        element = document.createElement('meta');
-        if (selector.includes('property=')) {
-          const prop = selector.match(/property="([^"]+)"/)?.[1];
-          if (prop) element.setAttribute('property', prop);
-        } else if (selector.includes('name=')) {
-          const name = selector.match(/name="([^"]+)"/)?.[1];
-          if (name) element.setAttribute('name', name);
-        }
-        document.head.appendChild(element);
-      }
-      element.setAttribute(attribute, value);
-    };
+      {/* Open Graph Meta Tags */}
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:image" content={pageImage} />
+      <meta property="og:url" content={pageUrl} />
+      <meta property="og:site_name" content="ShopVoraOnline" />
 
-    // Helper function to update or create link tag
-    const updateLinkTag = (rel: string, href: string) => {
-      let element: HTMLLinkElement | null = document.querySelector(`link[rel="${rel}"]`);
-      if (!element) {
-        element = document.createElement('link');
-        element.setAttribute('rel', rel);
-        document.head.appendChild(element);
-      }
-      element.setAttribute('href', href);
-    };
+      {/* Twitter Card Meta Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={pageDescription} />
+      <meta name="twitter:image" content={pageImage} />
 
-    // Primary Meta Tags
-    updateMetaTag('meta[name="title"]', 'content', fullTitle);
-    updateMetaTag('meta[name="description"]', 'content', pageDescription);
-    updateMetaTag('meta[name="keywords"]', 'content', pageKeywords);
-    updateMetaTag('meta[name="author"]', 'content', pageAuthor);
-    updateMetaTag('meta[name="robots"]', 'content', 'index, follow');
-    updateMetaTag('meta[name="googlebot"]', 'content', 'index, follow');
+      {/* Canonical URL */}
+      <link rel="canonical" href={pageUrl} />
 
-    // Open Graph Meta Tags
-    updateMetaTag('meta[property="og:type"]', 'content', 'website');
-    updateMetaTag('meta[property="og:title"]', 'content', fullTitle);
-    updateMetaTag('meta[property="og:description"]', 'content', pageDescription);
-    updateMetaTag('meta[property="og:image"]', 'content', pageImage);
-    updateMetaTag('meta[property="og:url"]', 'content', pageUrl);
-    updateMetaTag('meta[property="og:site_name"]', 'content', 'ShopVoraOnline');
-
-    // Twitter Card Meta Tags
-    updateMetaTag('meta[name="twitter:card"]', 'content', 'summary_large_image');
-    updateMetaTag('meta[name="twitter:title"]', 'content', fullTitle);
-    updateMetaTag('meta[name="twitter:description"]', 'content', pageDescription);
-    updateMetaTag('meta[name="twitter:image"]', 'content', pageImage);
-
-    // Canonical URL
-    updateLinkTag('canonical', pageUrl);
-
-    // Additional Meta Tags
-    updateMetaTag('meta[name="mobile-web-app-capable"]', 'content', 'yes');
-    updateMetaTag('meta[name="apple-mobile-web-app-capable"]', 'content', 'yes');
-    updateMetaTag('meta[name="apple-mobile-web-app-status-bar-style"]', 'content', 'default');
-    updateMetaTag('meta[name="theme-color"]', 'content', '#ffffff');
-  }, [fullTitle, pageDescription, pageKeywords, pageImage, pageUrl, pageAuthor]);
-
-  return null;
+      {/* Additional Meta Tags */}
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="theme-color" content="#ffffff" />
+    </>
+  );
 };
 
 export default SEO;

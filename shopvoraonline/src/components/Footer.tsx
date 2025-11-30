@@ -101,7 +101,16 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-stone-200 pt-8 flex flex-col md:flex-row justify-between items-center">
+        {/* Legal Disclaimer */}
+        <div className="mt-12 border-t border-stone-200 pt-8">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+            <p className="text-xs text-center text-stone-600 leading-relaxed">
+              <span className="font-semibold">DISCLAIMER:</span> THIS SITE IS FOR INFORMATIONAL PURPOSES ONLY AND SHOULD NOT BE USED AS A SUBSTITUTE FOR ADVICE OR TREATMENT FROM A QUALIFIED MEDICAL PROFESSIONAL. THIS SITE IS AFFILIATED WITH FORMULYST AND CARROT & STICK, WHOSE PRODUCTS ARE AMONG THOSE WE REVIEW AND RANK.
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-stone-200 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-xs text-stone-400">
             &copy; {new Date().getFullYear()} ShopVoraOnline. All rights reserved.
           </p>

@@ -40,10 +40,10 @@ const Footer: React.FC = () => {
               Democratizing skincare education with science-backed advice and honest reviews. Your skin journey starts here.
             </p>
             <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Instagram className="w-5 h-5" /></a>
-              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Facebook className="w-5 h-5" /></a>
-              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Twitter className="w-5 h-5" /></a>
-              <a href="#" className="text-stone-400 hover:text-rose-500 transition-colors"><Mail className="w-5 h-5" /></a>
+              <a href="https://www.instagram.com/art_of_folds?igsh=MXYzeWdmODBwczRsZg==" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-500 transition-colors"><Instagram className="w-5 h-5" /></a>
+              <a href="https://www.facebook.com/profile.php?id=61579919684282" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-500 transition-colors"><Facebook className="w-5 h-5" /></a>
+              <a href="https://x.com/shopvoraonline" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-500 transition-colors"><Twitter className="w-5 h-5" /></a>
+              <a href="mailto:contach@shopvoraonline.com" className="text-stone-400 hover:text-rose-500 transition-colors"><Mail className="w-5 h-5" /></a>
             </div>
           </div>
 

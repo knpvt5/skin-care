@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, MapPin, Instagram, Loader2 } from 'lucide-react';
+import { Mail, MapPin, Loader2 } from 'lucide-react';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { api } from '../services/api';
@@ -86,16 +86,6 @@ const Contact: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-stone-900">Location</h3>
                   <p className="text-stone-600">Delhi, India</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-rose-50 rounded-full text-rose-500">
-                  <Instagram className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-stone-900">Social</h3>
-                  <p className="text-stone-600">@ShopVoraOnline</p>
                 </div>
               </div>
             </div>

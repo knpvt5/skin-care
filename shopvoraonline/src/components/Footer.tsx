@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
               <a href="https://www.instagram.com/art_of_folds?igsh=MXYzeWdmODBwczRsZg==" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-500 transition-colors"><Instagram className="w-5 h-5" /></a>
               <a href="https://www.facebook.com/profile.php?id=61579919684282" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-500 transition-colors"><Facebook className="w-5 h-5" /></a>
               <a href="https://x.com/shopvoraonline" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-rose-500 transition-colors"><Twitter className="w-5 h-5" /></a>
-              <a href="mailto:contach@shopvoraonline.com" className="text-stone-400 hover:text-rose-500 transition-colors"><Mail className="w-5 h-5" /></a>
+              <a href="mailto:contact@shopvoraonline.com" className="text-stone-400 hover:text-rose-500 transition-colors"><Mail className="w-5 h-5" /></a>
             </div>
           </div>
 
@@ -115,8 +115,8 @@ const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} ShopVoraOnline. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link to="/privacy" className="text-xs text-stone-400 hover:text-stone-600">Privacy Policy</Link>
-            <Link to="/terms" className="text-xs text-stone-400 hover:text-stone-600">Terms of Service</Link>
+            <Link to="/privacy-policy" className="text-xs text-stone-400 hover:text-stone-600">Privacy Policy</Link>
+            <Link to="/terms-and-conditions" className="text-xs text-stone-400 hover:text-stone-600">Terms of Service</Link>
           </div>
         </div>
       </div>

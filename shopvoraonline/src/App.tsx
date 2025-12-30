@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import Chatbot from './components/Chatbot';
+import WhatsAppButton from './components/WhatsAppButton';
 
 // Eager load home page for better FCP
 import Home from './pages/Home';
@@ -35,6 +36,7 @@ function App() {
     <AuthProvider>
       <Toaster position="top-center" />
       <Chatbot />
+      <WhatsAppButton />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route path="/" element={<Home />} />

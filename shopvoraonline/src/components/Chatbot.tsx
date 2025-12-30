@@ -82,6 +82,17 @@ const Chatbot = () => {
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+      // Prepare the full conversation history (including the new user message)
+      const allMessages = [...messages, userMessage];
+
+      // Format messages to only include role and content
+      const formattedMessages = allMessages
+        .filter(msg => msg.role !== 'assistant' || msg.content.trim()) // Skip empty assistant messages
+        .map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }));
+
       const response = await fetch(`${supabaseUrl}/functions/v1/smart-task`, {
         method: 'POST',
         headers: {
@@ -89,7 +100,7 @@ const Chatbot = () => {
           'Authorization': `Bearer ${supabaseAnonKey}`,
         },
         body: JSON.stringify({
-          message: userMessage.content,
+          messages: formattedMessages,
         }),
       });
 
@@ -135,11 +146,11 @@ const Chatbot = () => {
         prev.map((msg) =>
           msg.id === aiMessageId
             ? {
-                ...msg,
-                content:
-                  'Sorry, I encountered an error. Please try again later.',
-                streaming: false,
-              }
+              ...msg,
+              content:
+                'Sorry, I encountered an error. Please try again later.',
+              streaming: false,
+            }
             : msg
         )
       );
@@ -164,11 +175,10 @@ const Chatbot = () => {
       {/* Chat Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 p-3 md:p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 ${
-          isOpen
+        className={`fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 p-3 md:p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 ${isOpen
             ? 'bg-rose-600 hover:bg-rose-700'
             : 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600'
-        }`}
+          }`}
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
       >
         {isOpen ? (
@@ -194,16 +204,14 @@ const Chatbot = () => {
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${
-                  message.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                    message.role === 'user'
+                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${message.role === 'user'
                       ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white'
                       : 'bg-white text-gray-800 shadow-md border border-gray-100'
-                  }`}
+                    }`}
                 >
                   <p className="text-sm whitespace-pre-wrap break-words">
                     {message.content}
